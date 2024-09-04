@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CellCultureBank.API", "CellCultureBank.API\CellCultureBank.API.csproj", "{4C682037-0871-4E73-8A84-B37CFF56A99C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CellCultureBank.BLL", "CellCultureBank.BLL\CellCultureBank.BLL.csproj", "{488521DC-347A-4613-9054-893ABBE6A250}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CellCultureBank.DAL", "CellCultureBank.DAL\CellCultureBank.DAL.csproj", "{2FD6EB17-5CFB-4F97-A7E9-EAA0F2F3109B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "config", "config", "{7442F61D-F496-4995-8732-4770476A6257}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4C682037-0871-4E73-8A84-B37CFF56A99C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C682037-0871-4E73-8A84-B37CFF56A99C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C682037-0871-4E73-8A84-B37CFF56A99C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C682037-0871-4E73-8A84-B37CFF56A99C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{488521DC-347A-4613-9054-893ABBE6A250}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{488521DC-347A-4613-9054-893ABBE6A250}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{488521DC-347A-4613-9054-893ABBE6A250}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{488521DC-347A-4613-9054-893ABBE6A250}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2FD6EB17-5CFB-4F97-A7E9-EAA0F2F3109B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2FD6EB17-5CFB-4F97-A7E9-EAA0F2F3109B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2FD6EB17-5CFB-4F97-A7E9-EAA0F2F3109B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2FD6EB17-5CFB-4F97-A7E9-EAA0F2F3109B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+	EndGlobalSection
+EndGlobal

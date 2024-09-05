@@ -1,11 +1,17 @@
 using System.Reflection;
+using CellCultureBank.BLL.Services.BankFirst;
 using CellCultureBank.DAL.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
-
+builder.Services.AddScoped<IBankFirstService, BankFirstService>();
+builder.Services.AddControllers();
 // Add services to the container.
+
+// This method gets called by the runtime. Use this method to add services to the container.
+
+
 builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new OpenApiInfo
@@ -16,8 +22,8 @@ builder.Services.AddSwaggerGen(options =>
 
     });
 
-    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    var filePath = Path.Combine(System.AppContext.BaseDirectory, "api1.xml");
+    options.IncludeXmlComments(filePath);
     
 });
 builder.Services.AddControllers();

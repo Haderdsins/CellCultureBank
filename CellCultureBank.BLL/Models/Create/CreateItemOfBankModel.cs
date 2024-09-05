@@ -1,9 +1,7 @@
-﻿namespace CellCultureBank.DAL.Models;
+﻿namespace CellCultureBank.BLL.Models.Create;
 
-public class BankFirst : Entity
+public class CreateItemOfBankModel
 {
-    public int Id { get; set; }//Id в таблице
-    
     public DateTime Date { get; set; }//Дата
 
     public String Movement { get; set; }//Движение
@@ -21,7 +19,7 @@ public class BankFirst : Entity
     public int Quantity { get; set; }//Количество
     
     public int ActualBalance { get; set; }//Фактический остаток
-
+    
     public String FullName { get; set; }//ФИО
     
     public String Note { get; set; }//Примечание

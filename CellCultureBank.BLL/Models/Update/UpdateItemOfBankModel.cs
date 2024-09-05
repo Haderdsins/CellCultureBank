@@ -1,8 +1,8 @@
-﻿namespace CellCultureBank.DAL.Models;
+﻿namespace CellCultureBank.BLL.Models.Update;
 
-public class BankFirst : Entity
+public class UpdateItemOfBankModel
 {
-    public int Id { get; set; }//Id в таблице
+    public int BankId { get; set; }//Id в таблице
     
     public DateTime Date { get; set; }//Дата
 
@@ -21,7 +21,7 @@ public class BankFirst : Entity
     public int Quantity { get; set; }//Количество
     
     public int ActualBalance { get; set; }//Фактический остаток
-
+    
     public String FullName { get; set; }//ФИО
     
     public String Note { get; set; }//Примечание

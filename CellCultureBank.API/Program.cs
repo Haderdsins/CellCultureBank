@@ -16,12 +16,14 @@ builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new OpenApiInfo
     {
-        Version = "v1.0.0",
+        Version = "v1.0.1",
         Title = "Банк клеточных культур",
         Description = "Система, посредством которой производят последовательные серии продукции с использованием клеточных культур, принадлежащих одному и тому же главному банку клеток.",
 
     });
-
+    //как включить генерацию xml в меню не нашел, подключил вручную в файле проекта csproj
+    //в csproj указан файл генерации xml api1.xml
+    //также чтобы все работало подключается библиотека Swashbuckle.AspNetCore
     var filePath = Path.Combine(System.AppContext.BaseDirectory, "api1.xml");
     options.IncludeXmlComments(filePath);
     

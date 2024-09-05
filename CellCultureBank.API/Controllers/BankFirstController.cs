@@ -36,7 +36,7 @@ public class BankFirstController : ControllerBase
         _bankFirstService.Delete(deleteItemOfBankModelModel.Id);
     }
     /// <summary>
-    /// Получить клетку по id
+    /// Получить клетку по id (не работает)
     /// </summary>
     /// <param name="getItemsOfBankModel"></param>
     [HttpGet("GetItemOfBank")]

@@ -36,13 +36,14 @@ public class BankFirstController : ControllerBase
         _bankFirstService.Delete(deleteItemOfBankModelModel.Id);
     }
     /// <summary>
-    /// Получить клетку по id (не работает)
+    /// Получить клетку по id
     /// </summary>
     /// <param name="getItemsOfBankModel"></param>
     [HttpGet("GetItemOfBank")]
-    public void GetItemOfBank(GetItemsOfBankModel getItemsOfBankModel)
+    public IActionResult GetItemOfBank(int BankId)//то что написано вот тут и запрашивается у клиента
     {
-        _bankFirstService.Get(getItemsOfBankModel.Id);
+        var itemOfBank = _bankFirstService.Get(BankId);
+        return Ok(itemOfBank) ;
     }
     
     /// <summary>
@@ -50,7 +51,7 @@ public class BankFirstController : ControllerBase
     /// </summary>
     /// <param name="getItemsOfBankModel"></param>
     [HttpGet("GetAllItemOfBank")]
-    public OkObjectResult GetAllItemOfBank()
+    public IActionResult GetAllItemOfBank()
     {
         var allItems = _bankFirstService.GetAll();
         return Ok(allItems);

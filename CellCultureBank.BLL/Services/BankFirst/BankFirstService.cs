@@ -54,9 +54,17 @@ public class BankFirstService : IBankFirstService
         }
     }
 
-    public void Get(int BankId)
+    public DAL.Models.BankFirst Get(int BankId)
     {
-        throw new NotImplementedException();
+        var bankItemToGet = _dbContext.BankFirsts.Find(BankId);
+        if (bankItemToGet!=null)
+        {
+            return bankItemToGet ;
+        }
+        else
+        {
+            throw new ArgumentException("Клетки с таким id не найдено");
+        }
     }
 
     public IEnumerable<DAL.Models.BankFirst> GetAll()

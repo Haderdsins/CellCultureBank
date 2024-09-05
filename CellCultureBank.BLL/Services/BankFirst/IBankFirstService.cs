@@ -9,7 +9,7 @@ public interface IBankFirstService
     
     void Delete(int BankId);
     
-    void Get(int BankId);
+    DAL.Models.BankFirst Get(int BankId);
 
     IEnumerable<DAL.Models.BankFirst> GetAll(); 
     

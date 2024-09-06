@@ -62,9 +62,9 @@ public class BankFirstController : ControllerBase
     /// </summary>
     /// <param name="updateItemOfBankModel"></param>
     [HttpPut("UpdateItemOfBank")]
-    public void UpdateItemOfBank(UpdateItemOfBankModel updateItemOfBankModel)
+    public void UpdateItemOfBank(int BankId, UpdateItemOfBankModel updateItemOfBankModel)
     {
-        _bankFirstService.Update(updateItemOfBankModel.BankId,updateItemOfBankModel);
+        _bankFirstService.Update(BankId,updateItemOfBankModel);
     }
     
     

@@ -2,8 +2,6 @@
 
 public class UpdateItemOfBankModel
 {
-    public int BankId { get; set; }//Id в таблице
-    
     public DateTime Date { get; set; }//Дата
 
     public String Movement { get; set; }//Движение

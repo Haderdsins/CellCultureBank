@@ -2,13 +2,14 @@
 using CellCultureBank.BLL.Models.Update;
 using CellCultureBank.DAL.Database;
 using CellCultureBank.DAL.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace CellCultureBank.BLL.Services.BankFirst;
 
 public class BankFirstService : IBankFirstService
 {
     private readonly BankDbContext _dbContext;
-
+    //TODO: добавить реализацию вывода всех клеток по дате в убывающем и возрастающем порядках, удалить все клетки
     public BankFirstService(BankDbContext dbContext)
     {
         _dbContext = dbContext;
@@ -61,10 +62,7 @@ public class BankFirstService : IBankFirstService
         {
             return bankItemToGet ;
         }
-        else
-        {
-            throw new ArgumentException("Клетки с таким id не найдено");
-        }
+        throw new ArgumentException("Клетки с таким id не найдено");
     }
 
     public IEnumerable<DAL.Models.BankFirst> GetAll()
@@ -95,5 +93,12 @@ public class BankFirstService : IBankFirstService
         {
             throw new ArgumentException("Клетка с таким id не найдена");
         }
+    }
+
+    public void DeleteAll()
+    {
+        _dbContext.BankFirsts.RemoveRange(_dbContext.BankFirsts);
+        _dbContext.SaveChanges();
+        _dbContext.Database.ExecuteSqlRaw("DBCC CHECKIDENT ('[BankFirsts]', RESEED, 0);");
     }
 }

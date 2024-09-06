@@ -1,9 +1,7 @@
 ﻿using CellCultureBank.BLL.Models.Create;
 using CellCultureBank.BLL.Models.Delete;
-using CellCultureBank.BLL.Models.Get;
 using CellCultureBank.BLL.Models.Update;
 using CellCultureBank.BLL.Services.BankFirst;
-using CellCultureBank.DAL.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CellCultureBank.API.Controllers;
@@ -66,6 +64,16 @@ public class BankFirstController : ControllerBase
     {
         _bankFirstService.Update(BankId,updateItemOfBankModel);
     }
+    /// <summary>
+    /// Удалить все клетки
+    /// </summary>
+    [HttpDelete("DeleteAllItemOfBank")]
+    public void DeleteAllItemOfBank()
+    {
+        _bankFirstService.DeleteAll();
+    }
+    
+    
     
     
 }

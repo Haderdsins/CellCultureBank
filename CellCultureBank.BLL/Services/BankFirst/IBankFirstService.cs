@@ -14,4 +14,6 @@ public interface IBankFirstService
     IEnumerable<DAL.Models.BankFirst> GetAll(); 
     
     void Update(int BankId, UpdateItemOfBankModel model);
+
+    void DeleteAll();
 }

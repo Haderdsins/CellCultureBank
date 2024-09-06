@@ -9,7 +9,7 @@ namespace CellCultureBank.BLL.Services.BankFirst;
 public class BankFirstService : IBankFirstService
 {
     private readonly BankDbContext _dbContext;
-    //TODO: добавить реализацию вывода всех клеток по дате в убывающем и возрастающем порядках, удалить все клетки
+    //TODO: добавить реализацию вывода всех клеток по дате в убывающем и возрастающем порядках
     public BankFirstService(BankDbContext dbContext)
     {
         _dbContext = dbContext;
@@ -17,7 +17,6 @@ public class BankFirstService : IBankFirstService
     
     public IEnumerable<DAL.Models.BankFirst> GetAllItems()
     {
-        // Use Entity Framework to fetch all items from the database
         return _dbContext.BankFirsts.ToList();
     }
     

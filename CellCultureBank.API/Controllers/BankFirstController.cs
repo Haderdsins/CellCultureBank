@@ -33,6 +33,16 @@ public class BankFirstController : ControllerBase
     {
         _bankFirstService.Delete(deleteItemOfBankModelModel.Id);
     }
+    
+    /// <summary>
+    /// Удалить все клетки
+    /// </summary>
+    [HttpDelete("DeleteAllItemOfBank")]
+    public void DeleteAllItemOfBank()
+    {
+        _bankFirstService.DeleteAll();
+    }
+    
     /// <summary>
     /// Получить клетку по id
     /// </summary>
@@ -64,14 +74,7 @@ public class BankFirstController : ControllerBase
     {
         _bankFirstService.Update(BankId,updateItemOfBankModel);
     }
-    /// <summary>
-    /// Удалить все клетки
-    /// </summary>
-    [HttpDelete("DeleteAllItemOfBank")]
-    public void DeleteAllItemOfBank()
-    {
-        _bankFirstService.DeleteAll();
-    }
+
     
     
     

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CellCultureBank.DAL.Migrations
 {
     [DbContext(typeof(BankDbContext))]
-    [Migration("20240904141236_init")]
-    partial class init
+    [Migration("20240908090717_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -19,4 +19,6 @@ public interface IBankFirstService
 
     IEnumerable<DAL.Models.BankFirst> GetSortedDescendingItemsOfBank();
     IEnumerable<DAL.Models.BankFirst> GetSortedItemsOfBank();
+
+    int GetCountOfAllItems();
 }

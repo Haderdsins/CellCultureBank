@@ -9,7 +9,8 @@ namespace CellCultureBank.BLL.Services.BankFirst;
 public class BankFirstService : IBankFirstService
 {
     private readonly BankDbContext _dbContext;
-    //TODO: добавить реализацию вывода всех клеток по дате в убывающем и возрастающем порядках
+    //TODO: добавить реализацию вывода всех клеток по определнному диапозону дат, поиск элементов по тексту
+    //TODO: экспорт и импорт данных в CSV и EXCEL
     public BankFirstService(BankDbContext dbContext)
     {
         _dbContext = dbContext;
@@ -108,5 +109,10 @@ public class BankFirstService : IBankFirstService
     public IEnumerable<DAL.Models.BankFirst> GetSortedItemsOfBank()
     {
         return GetAllItems().OrderBy(p=>p.Date);
+    }
+
+    public int GetCountOfAllItems()
+    {
+        return GetAllItems().Count();
     }
 }

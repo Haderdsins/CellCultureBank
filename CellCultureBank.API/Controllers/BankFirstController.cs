@@ -96,9 +96,18 @@ public class BankFirstController : ControllerBase
     {
         _bankFirstService.Update(BankId,updateItemOfBankModel);
     }
+    /// <summary>
+    /// Получить количество записей
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet("GetCountOfItems")]
+    public int GetCountOfItems()
+    {
+        return _bankFirstService.GetCountOfAllItems();
+    }
 
-    
-    
-    
-    
+
+
+
+
 }

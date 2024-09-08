@@ -1,7 +1,15 @@
-﻿using CellCultureBank.BLL.Models.Create;
+﻿using System.Globalization;
+using System.Text;
+using CellCultureBank.BLL.Models.Create;
+using CellCultureBank.BLL.Models.CSV;
+using CellCultureBank.BLL.Models.Get;
 using CellCultureBank.BLL.Models.Update;
 using CellCultureBank.DAL.Database;
 using CellCultureBank.DAL.Models;
+using CsvHelper;
+using CsvHelper.Configuration;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 
 namespace CellCultureBank.BLL.Services.BankFirst;
@@ -16,7 +24,7 @@ public class BankFirstService : IBankFirstService
         _dbContext = dbContext;
     }
     
-    public IEnumerable<DAL.Models.BankFirst> GetAllItems()
+    public List<DAL.Models.BankFirst> GetAllItems()
     {
         return _dbContext.BankFirsts.ToList();
     }
@@ -114,5 +122,46 @@ public class BankFirstService : IBankFirstService
     public int GetCountOfAllItems()
     {
         return GetAllItems().Count();
+    }
+
+    public async Task<Stream> ExportToCsvAsync()
+    {
+        var items = _dbContext.BankFirsts
+            .Select(bf => new BankFirstCsvRecord
+            {
+                Date = bf.Date,
+                Movement = bf.Movement,
+                Dewar = bf.Dewar,
+                Identifier = bf.Identifier,
+                NameOfCellCulture = bf.NameOfCellCulture,
+                Passage = bf.Passage,
+                QuantityOnLabel = bf.QuantityOnLabel,
+                Quantity = bf.Quantity,
+                ActualBalance = bf.ActualBalance,
+                FullName = bf.FullName,
+                Note = bf.Note
+            })
+            .ToList();
+
+        if (items == null || !items.Any())
+        {
+            return null;
+        }
+
+        var csvConfig = new CsvConfiguration(CultureInfo.InvariantCulture)
+        {
+            Delimiter = ",",
+        };
+
+        var stream = new MemoryStream();
+        using (var writer = new StreamWriter(stream, Encoding.UTF8, leaveOpen: true))
+        using (var csv = new CsvWriter(writer, csvConfig))
+        {
+            csv.WriteRecords(items);
+            await writer.FlushAsync();
+            stream.Position = 0; // Reset stream position to the beginning
+        }
+
+        return stream;
     }
 }

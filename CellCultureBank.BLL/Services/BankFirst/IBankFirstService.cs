@@ -1,5 +1,6 @@
 ﻿using CellCultureBank.BLL.Models.Create;
 using CellCultureBank.BLL.Models.Update;
+using Microsoft.AspNetCore.Http;
 
 namespace CellCultureBank.BLL.Services.BankFirst;
 
@@ -21,4 +22,6 @@ public interface IBankFirstService
     IEnumerable<DAL.Models.BankFirst> GetSortedItemsOfBank();
 
     int GetCountOfAllItems();
+
+    Task<Stream> ExportToCsvAsync();
 }

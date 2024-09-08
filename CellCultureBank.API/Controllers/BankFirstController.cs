@@ -1,7 +1,11 @@
-﻿using CellCultureBank.BLL.Models.Create;
+﻿using System.Globalization;
+using System.Text;
+using CellCultureBank.BLL.Models.Create;
 using CellCultureBank.BLL.Models.Delete;
 using CellCultureBank.BLL.Models.Update;
 using CellCultureBank.BLL.Services.BankFirst;
+using CsvHelper;
+using CsvHelper.Configuration;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CellCultureBank.API.Controllers;
@@ -88,15 +92,6 @@ public class BankFirstController : ControllerBase
     }
     
     /// <summary>
-    /// Обновить данные о клетке
-    /// </summary>
-    /// <param name="updateItemOfBankModel"></param>
-    [HttpPut("UpdateItemOfBank")]
-    public void UpdateItemOfBank(int BankId, UpdateItemOfBankModel updateItemOfBankModel)
-    {
-        _bankFirstService.Update(BankId,updateItemOfBankModel);
-    }
-    /// <summary>
     /// Получить количество записей
     /// </summary>
     /// <returns></returns>
@@ -105,9 +100,30 @@ public class BankFirstController : ControllerBase
     {
         return _bankFirstService.GetCountOfAllItems();
     }
-
-
-
-
-
+    
+    /// <summary>
+    /// Обновить данные о клетке
+    /// </summary>
+    /// <param name="updateItemOfBankModel"></param>
+    [HttpPut("UpdateItemOfBank")]
+    public void UpdateItemOfBank(int BankId, UpdateItemOfBankModel updateItemOfBankModel)
+    {
+        _bankFirstService.Update(BankId,updateItemOfBankModel);
+    }
+    
+    
+    /// <summary>
+    /// Экспорт данных в CSV
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet("ExportToCsv")]
+    public async Task<IActionResult> ExportToCsv()
+    {
+        var csvStream = await _bankFirstService.ExportToCsvAsync();
+        if (csvStream == null)
+        {
+            return NotFound("Нет данных для экспорта.");
+        }
+        return File(csvStream, "text/csv", "BankFirstData.csv");
+    }
 }

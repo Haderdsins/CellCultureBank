@@ -16,4 +16,7 @@ public interface IBankFirstService
     void Update(int BankId, UpdateItemOfBankModel model);
 
     void DeleteAll();
+
+    IEnumerable<DAL.Models.BankFirst> GetSortedDescendingItemsOfBank();
+    IEnumerable<DAL.Models.BankFirst> GetSortedItemsOfBank();
 }

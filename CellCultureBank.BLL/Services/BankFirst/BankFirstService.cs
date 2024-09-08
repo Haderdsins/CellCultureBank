@@ -100,4 +100,13 @@ public class BankFirstService : IBankFirstService
         _dbContext.SaveChanges();
         _dbContext.Database.ExecuteSqlRaw("DBCC CHECKIDENT ('[BankFirsts]', RESEED, 0);");
     }
+
+    public IEnumerable<DAL.Models.BankFirst> GetSortedDescendingItemsOfBank()
+    {
+        return GetAllItems().OrderByDescending(p=>p.Date);
+    }
+    public IEnumerable<DAL.Models.BankFirst> GetSortedItemsOfBank()
+    {
+        return GetAllItems().OrderBy(p=>p.Date);
+    }
 }

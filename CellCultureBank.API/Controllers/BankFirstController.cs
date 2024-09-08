@@ -66,6 +66,28 @@ public class BankFirstController : ControllerBase
     }
 
     /// <summary>
+    /// Получить все клетки (сортировка по дате на убывание)
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet("GetSortedDescendingItemsOfBank")]
+    public IActionResult GetSortedDescendingItemsOfBank()
+    {
+        var allSortDesItems = _bankFirstService.GetSortedDescendingItemsOfBank();
+        return Ok(allSortDesItems);
+    }
+    
+    /// <summary>
+    ///  Получить все клетки (сортировка по дате на возрастание)
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet("GetSortedItemsOfBank")]
+    public IActionResult GetSortedItemsOfBank()
+    {
+        var allSortItems = _bankFirstService.GetSortedItemsOfBank();
+        return Ok(allSortItems);
+    }
+    
+    /// <summary>
     /// Обновить данные о клетке
     /// </summary>
     /// <param name="updateItemOfBankModel"></param>

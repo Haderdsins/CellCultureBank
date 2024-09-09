@@ -2,14 +2,10 @@
 using System.Text;
 using CellCultureBank.BLL.Models.Create;
 using CellCultureBank.BLL.Models.CSV;
-using CellCultureBank.BLL.Models.Get;
 using CellCultureBank.BLL.Models.Update;
 using CellCultureBank.DAL.Database;
-using CellCultureBank.DAL.Models;
 using CsvHelper;
 using CsvHelper.Configuration;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 
 namespace CellCultureBank.BLL.Services.BankFirst;
@@ -18,7 +14,6 @@ public class BankFirstService : IBankFirstService
 {
     private readonly BankDbContext _dbContext;
     //TODO: добавить реализацию вывода всех клеток по определнному диапозону дат, поиск элементов по тексту
-    //TODO: импорт данных в CSV и EXCEL
     public BankFirstService(BankDbContext dbContext)
     {
         _dbContext = dbContext;

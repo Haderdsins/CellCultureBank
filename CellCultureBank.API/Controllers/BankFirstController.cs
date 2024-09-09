@@ -126,4 +126,25 @@ public class BankFirstController : ControllerBase
         }
         return File(csvStream, "text/csv", "BankFirstData.csv");
     }
+
+    /// <summary>
+    /// Импорт файла CSV
+    /// </summary>
+    /// <param name="file"></param>
+    /// <returns></returns>
+    [HttpPost("ImportFromCsv")]
+    public async Task<IActionResult> ImportToCsv(IFormFile file)
+    {
+        if (file == null || file.Length == 0)
+        {
+            return BadRequest("Файл не был загружен или пуст");
+        }
+
+        using (var stream = file.OpenReadStream())
+        {
+            await _bankFirstService.ImportFromCsvAsync(stream);
+        }
+
+        return Ok("Данные успешно импортированы");
+    }
 }

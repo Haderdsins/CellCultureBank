@@ -18,7 +18,7 @@ public class BankFirstService : IBankFirstService
 {
     private readonly BankDbContext _dbContext;
     //TODO: добавить реализацию вывода всех клеток по определнному диапозону дат, поиск элементов по тексту
-    //TODO: экспорт и импорт данных в CSV и EXCEL
+    //TODO: импорт данных в CSV и EXCEL
     public BankFirstService(BankDbContext dbContext)
     {
         _dbContext = dbContext;
@@ -163,5 +163,41 @@ public class BankFirstService : IBankFirstService
         }
 
         return stream;
+    }
+
+    public async Task ImportFromCsvAsync(Stream csvStream)
+    {
+        var csvConfig = new CsvConfiguration(CultureInfo.InvariantCulture)
+        {
+            Delimiter = ",",
+            HasHeaderRecord = true,
+        };
+
+        using (var reader = new StreamReader(csvStream))
+        using (var csv = new CsvReader(reader, csvConfig))
+        {
+            // Считывание данных из CSV в BankFirstCsvRecord
+            var records = csv.GetRecords<BankFirstCsvRecord>().ToList();
+
+            // Преобразование записей в модели для БД
+            var bankFirsts = records.Select(record => new DAL.Models.BankFirst
+            {
+                Date = record.Date?? null,
+                Movement = record.Movement?? null,
+                Dewar = record.Dewar?? null,
+                Identifier = record.Identifier,
+                NameOfCellCulture = record.NameOfCellCulture?? null,
+                Passage = record.Passage?? null,
+                QuantityOnLabel = record.QuantityOnLabel?? 0,
+                Quantity = record.Quantity?? 0,
+                ActualBalance = record.ActualBalance?? 0,
+                FullName = record.FullName?? null,
+                Note = record.Note?? null
+            }).ToList();
+
+            // Добавление данных в базу
+            _dbContext.BankFirsts.AddRange(bankFirsts);
+            await _dbContext.SaveChangesAsync();
+        }
     }
 }

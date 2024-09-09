@@ -24,4 +24,5 @@ public interface IBankFirstService
     int GetCountOfAllItems();
 
     Task<Stream> ExportToCsvAsync();
+    Task ImportFromCsvAsync(Stream csvStream);
 }

@@ -4,7 +4,7 @@ public class BankFirst : Entity
 {
     public int Id { get; set; }//Id в таблице
     
-    public DateTime Date { get; set; }//Дата
+    public DateTime? Date { get; set; }//Дата
 
     public String Movement { get; set; }//Движение
     

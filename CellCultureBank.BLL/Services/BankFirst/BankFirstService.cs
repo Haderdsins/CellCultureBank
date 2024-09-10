@@ -13,8 +13,7 @@ namespace CellCultureBank.BLL.Services.BankFirst;
 public class BankFirstService : IBankFirstService
 {
     private readonly BankDbContext _dbContext;
-    //TODO: доделать поиск по дате, чтобы можно было вводить в разные окна дату месяц число, чтобы не указывать время
-    //TODO: добавить реализацию вывода всех клеток по определнному диапозону дат
+
     
     public BankFirstService(BankDbContext dbContext)
     {

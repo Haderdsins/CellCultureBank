@@ -47,11 +47,12 @@ public class BankFirstController : ControllerBase
     {
         _bankFirstService.DeleteAll();
     }
-    
+
     /// <summary>
     /// Получить клетку по id
     /// </summary>
     /// <param name="getItemsOfBankModel"></param>
+    /// <param name="BankId">Идентификатор клетки</param>
     [HttpGet("GetItemOfBank")]
     public IActionResult GetItemOfBank(int BankId)//то что написано вот тут и запрашивается у клиента
     {
@@ -101,10 +102,11 @@ public class BankFirstController : ControllerBase
     {
         return _bankFirstService.GetCountOfAllItems();
     }
-    
+
     /// <summary>
     /// Обновить данные о клетке
     /// </summary>
+    /// <param name="BankId">Идентификатор клетки</param>
     /// <param name="updateItemOfBankModel"></param>
     [HttpPut("UpdateItemOfBank")]
     public void UpdateItemOfBank(int BankId, UpdateItemOfBankModel updateItemOfBankModel)
@@ -115,8 +117,9 @@ public class BankFirstController : ControllerBase
     /// <summary>
     /// Получить клетки по дате
     /// </summary>
-    /// <param name="Date"></param>
-    /// <param name="searchByDateModel"></param>
+    /// <param name="year">Год</param>
+    /// <param name="mounth">Месяц</param>
+    /// <param name="day">День</param>
     /// <returns></returns>
     [HttpGet("GetItemsOnDate")]
     public IActionResult GetItemsOnDate(int year, int mounth, int day)

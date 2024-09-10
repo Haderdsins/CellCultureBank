@@ -124,6 +124,17 @@ public class BankFirstService : IBankFirstService
             .Where(p => p.Date.Value.Year ==year &&  p.Date.Value.Month ==mounth && p.Date.Value.Day == day);
     }
 
+    public IEnumerable<DAL.Models.BankFirst> GetAllOnDateRange(int yearStart, int mounthStart, int dayStart, int yearEnd, int mounthEnd, int dayEnd)
+    {
+        return GetAllItems()
+            .Where(p =>
+                p.Date.Value.Year >= yearStart && p.Date.Value.Year <= yearEnd &&
+                p.Date.Value.Month >= mounthStart && p.Date.Value.Month <= mounthEnd &&
+                p.Date.Value.Day >= dayStart && p.Date.Value.Day <= dayEnd
+            );
+    }
+
+
     public int GetCountOfAllItems()
     {
         return GetAllItems().Count();

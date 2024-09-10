@@ -129,6 +129,23 @@ public class BankFirstController : ControllerBase
     }
 
     /// <summary>
+    /// Получить клетки в диапозоне дат
+    /// </summary>
+    /// <param name="yearStart">Начальный год</param>
+    /// <param name="mounthStart">Начальный месяц</param>
+    /// <param name="dayStart">Начальный день</param>
+    /// <param name="yearEnd">Конечный год</param>
+    /// <param name="mounthEnd">Конечный месяц</param>
+    /// <param name="dayEnd">Конечный день</param>
+    /// <returns></returns>
+    [HttpGet("GetItemsOnDateRange")]
+    public IActionResult GetItemsOnDateRange(int yearStart, int mounthStart, int dayStart, int yearEnd, int mounthEnd, int dayEnd)
+    {
+        var result = _bankFirstService.GetAllOnDateRange(yearStart, mounthStart, dayStart, yearEnd, mounthEnd, dayEnd);
+        return Ok(result);
+    }
+
+    /// <summary>
     /// Экспорт данных в CSV
     /// </summary>
     /// <returns></returns>

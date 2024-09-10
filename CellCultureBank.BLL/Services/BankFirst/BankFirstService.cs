@@ -13,7 +13,7 @@ namespace CellCultureBank.BLL.Services.BankFirst;
 public class BankFirstService : IBankFirstService
 {
     private readonly BankDbContext _dbContext;
-    //TODO: поиск клеток по дате
+    //TODO: доделать поиск по дате, чтобы можно было вводить в разные окна дату месяц число, чтобы не указывать время
     //TODO: добавить реализацию вывода всех клеток по определнному диапозону дат
     
     public BankFirstService(BankDbContext dbContext)
@@ -118,10 +118,10 @@ public class BankFirstService : IBankFirstService
         return GetAllItems().OrderBy(p=>p.Date);
     }
 
-    public IEnumerable<DAL.Models.BankFirst> GetAllOnDate(DateTime Date )
+    public IEnumerable<DAL.Models.BankFirst> GetAllOnDate(int year, int mounth, int day)
     {
         return GetAllItems()
-            .Where(p => p.Date == Date);
+            .Where(p => p.Date.Value.Year ==year &&  p.Date.Value.Month ==mounth && p.Date.Value.Day == day);
     }
 
     public int GetCountOfAllItems()

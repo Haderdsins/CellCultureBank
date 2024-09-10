@@ -20,7 +20,7 @@ public interface IBankFirstService
 
     IEnumerable<DAL.Models.BankFirst> GetSortedDescendingItemsOfBank();
     IEnumerable<DAL.Models.BankFirst> GetSortedItemsOfBank();
-    IEnumerable<DAL.Models.BankFirst> GetAllOnDate(DateTime Date);
+    IEnumerable<DAL.Models.BankFirst> GetAllOnDate(int year, int mounth, int day);
     
     
 

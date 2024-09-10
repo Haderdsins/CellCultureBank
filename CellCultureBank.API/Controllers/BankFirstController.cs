@@ -2,6 +2,7 @@
 using System.Text;
 using CellCultureBank.BLL.Models.Create;
 using CellCultureBank.BLL.Models.Delete;
+using CellCultureBank.BLL.Models.Search;
 using CellCultureBank.BLL.Models.Update;
 using CellCultureBank.BLL.Services.BankFirst;
 using CsvHelper;
@@ -110,18 +111,19 @@ public class BankFirstController : ControllerBase
     {
         _bankFirstService.Update(BankId,updateItemOfBankModel);
     }
+
     /// <summary>
     /// Получить клетки по дате
     /// </summary>
     /// <param name="Date"></param>
+    /// <param name="searchByDateModel"></param>
     /// <returns></returns>
     [HttpGet("GetItemsOnDate")]
-    public IActionResult GetItemsOnDate(DateTime Date )
+    public IActionResult GetItemsOnDate(int year, int mounth, int day)
     {
-        var result =  _bankFirstService.GetAllOnDate(Date);
+        var result =  _bankFirstService.GetAllOnDate(year, mounth, day);
         return Ok(result);
     }
-
 
     /// <summary>
     /// Экспорт данных в CSV

@@ -13,7 +13,9 @@ namespace CellCultureBank.BLL.Services.BankFirst;
 public class BankFirstService : IBankFirstService
 {
     private readonly BankDbContext _dbContext;
-    //TODO: добавить реализацию вывода всех клеток по определнному диапозону дат, поиск элементов по тексту
+    //TODO: поиск клеток по дате
+    //TODO: добавить реализацию вывода всех клеток по определнному диапозону дат
+    
     public BankFirstService(BankDbContext dbContext)
     {
         _dbContext = dbContext;
@@ -23,6 +25,8 @@ public class BankFirstService : IBankFirstService
     {
         return _dbContext.BankFirsts.ToList();
     }
+    
+
     
     public void Create(CreateItemOfBankModel model)
     {
@@ -112,6 +116,12 @@ public class BankFirstService : IBankFirstService
     public IEnumerable<DAL.Models.BankFirst> GetSortedItemsOfBank()
     {
         return GetAllItems().OrderBy(p=>p.Date);
+    }
+
+    public IEnumerable<DAL.Models.BankFirst> GetAllOnDate(DateTime Date )
+    {
+        return GetAllItems()
+            .Where(p => p.Date == Date);
     }
 
     public int GetCountOfAllItems()

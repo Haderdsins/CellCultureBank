@@ -17,7 +17,7 @@ builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new OpenApiInfo
     {
-        Version = "v1.0.7 Beta",
+        Version = "v1.0.8 Beta",
         Title = "Банк клеточных культур",
         Description = "Система, посредством которой производят последовательные серии продукции с использованием клеточных культур, принадлежащих одному и тому же главному банку клеток.",
 

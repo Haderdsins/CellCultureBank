@@ -110,8 +110,19 @@ public class BankFirstController : ControllerBase
     {
         _bankFirstService.Update(BankId,updateItemOfBankModel);
     }
-    
-    
+    /// <summary>
+    /// Получить клетки по дате
+    /// </summary>
+    /// <param name="Date"></param>
+    /// <returns></returns>
+    [HttpGet("GetItemsOnDate")]
+    public IActionResult GetItemsOnDate(DateTime Date )
+    {
+        var result =  _bankFirstService.GetAllOnDate(Date);
+        return Ok(result);
+    }
+
+
     /// <summary>
     /// Экспорт данных в CSV
     /// </summary>

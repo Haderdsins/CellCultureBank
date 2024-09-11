@@ -25,8 +25,6 @@ public interface IBankFirstService
     IEnumerable<DAL.Models.BankFirst> GetAllOnDate(int year, int mounth, int day);
     IEnumerable<DAL.Models.BankFirst> GetAllOnDateRange(int yearStart, int mounthStart, int dayStart, int yearEnd, int mounthEnd, int dayEnd);
     
-    
-    
     int GetCountOfAllItems();
 
     Task<Stream> ExportToCsvAsync();

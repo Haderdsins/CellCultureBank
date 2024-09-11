@@ -1,6 +1,6 @@
 ﻿namespace CellCultureBank.DAL.Models;
 
-public class BankSecond
+public class BankSecond : Entity
 {
     public int Id{ get; set; }//Id в таблице
     
@@ -8,17 +8,19 @@ public class BankSecond
     
     public String Origin{ get; set; }//Происхождение
     
-    public DateTime DateOfFreezing{ get; set; }//Дата заморозки
+    public DateTime? DateOfFreezing{ get; set; }//Дата заморозки
     
     public String FrozenByFullName{ get; set; }//Кем заморожена
     
-    public DateTime DateOfDefrosting{ get; set; }//Дата разморозки
+    public DateTime? DateOfDefrosting{ get; set; }//Дата разморозки
     
     public String DefrostedByFullName{ get; set; }//Кем разморожена
     
-    public bool Certification{ get; set; }//Паспортизация
+    public bool? Clearing{ get; set; }//Отчистка
     
-    public int Quantity{ get; set; }//Id в таблице
+    public bool? Certification{ get; set; }//Паспортизация
     
-    public String Address{ get; set; }//Кем разморожена
+    public String Address{ get; set; }//Адрес
+    
+    public int? Quantity{ get; set; }//Количество
 }

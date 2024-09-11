@@ -17,7 +17,7 @@ namespace CellCultureBank.DAL.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Movement = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Dewar = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Identifier = table.Column<int>(type: "int", nullable: false),
@@ -33,6 +33,28 @@ namespace CellCultureBank.DAL.Migrations
                 {
                     table.PrimaryKey("PK_BankFirsts", x => x.Id);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "BankSeconds",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CellLine = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Origin = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DateOfFreezing = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    FrozenByFullName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DateOfDefrosting = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DefrostedByFullName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Clearing = table.Column<bool>(type: "bit", nullable: false),
+                    Certification = table.Column<bool>(type: "bit", nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BankSeconds", x => x.Id);
+                });
         }
 
         /// <inheritdoc />
@@ -40,6 +62,9 @@ namespace CellCultureBank.DAL.Migrations
         {
             migrationBuilder.DropTable(
                 name: "BankFirsts");
+
+            migrationBuilder.DropTable(
+                name: "BankSeconds");
         }
     }
 }

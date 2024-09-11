@@ -1,11 +1,12 @@
-using System.Reflection;
-using CellCultureBank.API;
 using CellCultureBank.BLL.Services.BankFirst;
+using CellCultureBank.BLL.Services.BankSecond;
 using CellCultureBank.DAL.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
+
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddScoped<IBankSecondService, BankSecondService>();
 builder.Services.AddScoped<IBankFirstService, BankFirstService>();
 builder.Services.AddControllers();
 // Add services to the container.
@@ -17,7 +18,7 @@ builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new OpenApiInfo
     {
-        Version = "v1.0.9",
+        Version = "v1.1.0",
         Title = "Банк клеточных культур",
         Description = "Система, посредством которой производят последовательные серии продукции с использованием клеточных культур, принадлежащих одному и тому же главному банку клеток.",
 
@@ -27,6 +28,7 @@ builder.Services.AddSwaggerGen(options =>
     //также чтобы все работало подключается библиотека Swashbuckle.AspNetCore
     var filePath = Path.Combine(System.AppContext.BaseDirectory, "api1.xml");
     options.IncludeXmlComments(filePath);
+    
     
     
 });

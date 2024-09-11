@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CellCultureBank.DAL.Migrations
 {
     [DbContext(typeof(BankDbContext))]
-    [Migration("20240908090717_Initial")]
+    [Migration("20240911091514_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -36,7 +36,7 @@ namespace CellCultureBank.DAL.Migrations
                     b.Property<int>("ActualBalance")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("Date")
+                    b.Property<DateTime?>("Date")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Dewar")
@@ -75,6 +75,54 @@ namespace CellCultureBank.DAL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("BankFirsts");
+                });
+
+            modelBuilder.Entity("CellCultureBank.DAL.Models.BankSecond", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CellLine")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Certification")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Clearing")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("DateOfDefrosting")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateOfFreezing")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DefrostedByFullName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FrozenByFullName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Origin")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("BankSeconds");
                 });
 #pragma warning restore 612, 618
         }

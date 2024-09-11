@@ -14,7 +14,9 @@ public class BankFirstService : IBankFirstService
 {
     private readonly BankDbContext _dbContext;
 
-    
+    //TODO: добавить еще одну обновленную таблицу с новыми полями
+    //TODO: настроить все инструменты для работы с новой бд
+    //TODO: перенос из openAPI в WebApp
     public BankFirstService(BankDbContext dbContext)
     {
         _dbContext = dbContext;

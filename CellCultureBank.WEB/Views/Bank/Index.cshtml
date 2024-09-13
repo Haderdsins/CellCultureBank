@@ -6,9 +6,11 @@
 
 <div class="text-center">
     <h1 class="display-4">Банк #1</h1>
-    <p>Список всех клеток банка:</p>
-    <a asp-controller="Bank" asp-action="Create" class="btn btn-primary mb-3">Создать новую клетку</a>
+    <p>Список всех клеток банка, количество записей: @Model.Count()</p>
+    <a asp-controller="Bank" asp-action="Create" class="btn btn-primary mb-3">Создать</a>
     <a href="@Url.Action("ExportToCsv", "Bank")" class="btn btn-success mb-3">Экспорт в CSV</a>
+    
+    
     <table class="table">
         <thead>
         <tr>
@@ -40,7 +42,16 @@
                 <td>@item.Certification</td>
                 <td>@item.Address</td>
                 <td>@item.Quantity</td>
+                <td>
+                    <form asp-action="Delete" method="post" onsubmit="return confirm('Вы уверены, что хотите удалить эту клетку?');" style="display:inline;">
+                        <input type="hidden" name="id" value="@item.Id" />
+                        <button type="submit" class="btn btn-link text-muted" style="font-size: 1.5rem; border: none; background: none; padding: 0;">
+                            <i class="fas fa-times"></i> <!-- Иконка крестика -->
+                        </button>
+                    </form>
+                </td>
             </tr>
+            
         }
         </tbody>
     </table>

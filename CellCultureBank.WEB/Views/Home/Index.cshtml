@@ -1,8 +1,54 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+ViewData["Title"] = "Home Page";
 }
+
+<!-- Добавляем стиль для увеличения размера кнопок и их распределения -->
+<style>
+    .btn-extra-large {
+        font-size: 2.5rem;  /* Увеличенный размер шрифта */
+        padding: 50px;  /* Увеличение внутреннего отступа для кнопок */
+        height: 200px;  /* Увеличение высоты кнопок */
+        width: 100%;  /* Каждая кнопка занимает всю ширину колонки */
+        text-align: center;  /* Центрирование текста на кнопке */
+        border-radius: 30px;
+    }
+
+    .btn-row {
+        display: flex;  /* Используем Flexbox для размещения кнопок в ряд */
+        justify-content: space-between;  /* Разделение кнопок равномерно по ширине */
+        gap: 20px;  /* Отступы между кнопками */
+    }
+
+    .btn-column {
+        flex: 1;  /* Каждая колонка занимает равную долю пространства */
+    }
+
+    .btn-column {
+        margin-bottom: 20px;  /* Отступ между кнопками на мобильных */
+    }
+    
+</style>
 
 <div class="text-center">
     <h1 class="display-4">Банк клеточных культур</h1>
-    <p>Система управления базы данных клеточных культур, <a href="https://docs.microsoft.com/aspnet/core">а также инструменты учета хранения.</a></p>
+    <p>Система управления базой данных клеточных культур, <a href="https://docs.microsoft.com/aspnet/core">а также инструменты учета хранения.</a></p>
+</div>
+
+<!-- Collapsible Buttons -->
+<div class="container mt-5">
+    <div class="btn-row">
+        <!-- Синяя кнопка для перехода на страницу Index контроллера Bank -->
+        <div class="btn-column">
+            <button class="btn btn-primary btn-extra-large" type="button" onclick="window.location.href='@Url.Action("Index", "Bank")'">
+                Банк #1
+            </button>
+        </div>
+
+        <!-- Серая кнопка #1 с текстом "в разработке" -->
+        <div class="btn-column">
+            <button class="btn btn-secondary btn-extra-large" type="button">
+                Добавить банк
+            </button>
+        </div>
+    </div>
 </div>

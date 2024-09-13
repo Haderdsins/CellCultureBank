@@ -14,18 +14,26 @@ public class BankController: Controller
     {
         _bankSecondService = bankSecondService;
     }
-    
+    /// <summary>
+    /// Страница всех клеток
+    /// </summary>
+    /// <returns></returns>
     public IActionResult Index()
     {
         var allItems = _bankSecondService.GetAll();
         return View(allItems);
     }
-    
+    /// <summary>
+    /// Страница создания новой клетки
+    /// </summary>
+    /// <returns></returns>
     [HttpGet]
     public IActionResult Create()
     {
         return View();
     }
+    
+    
     /// <summary>
     /// Эскпорт данных в CSV
     /// </summary>

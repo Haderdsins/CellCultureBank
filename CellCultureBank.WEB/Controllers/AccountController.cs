@@ -65,6 +65,7 @@ public class AccountController: TodoBaseController
             return RedirectToAction("Index", "Home");
         }
 
+
         private async Task AuthenticateAsync(User user)
         {
             var claims = new List<Claim>

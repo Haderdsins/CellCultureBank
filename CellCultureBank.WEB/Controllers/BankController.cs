@@ -26,7 +26,20 @@ public class BankController: Controller
     {
         return View();
     }
-    
+    /// <summary>
+    /// Эскпорт данных в CSV
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet("ExportToCsv")]
+    public async Task<IActionResult> ExportToCsv()
+    {
+        var csvStream = await _bankSecondService.ExportToCsvAsync();
+        if (csvStream == null)
+        {
+            return NotFound("Нет данных для экспорта.");
+        }
+        return File(csvStream, "text/csv", "BankSecondData.csv");
+    }
 
     /// <summary>
     /// Удалить клетку по id
@@ -160,21 +173,6 @@ public class BankController: Controller
     {
         var result = _bankSecondService.GetAllOnDateRangeOfDefrosting(yearStart, mounthStart, dayStart, yearEnd, mounthEnd, dayEnd);
         return Ok(result);
-    }
-
-    /// <summary>
-    /// Экспорт данных в CSV
-    /// </summary>
-    /// <returns></returns>
-    [HttpGet("ExportToCsv")]
-    public async Task<IActionResult> ExportToCsv()
-    {
-        var csvStream = await _bankSecondService.ExportToCsvAsync();
-        if (csvStream == null)
-        {
-            return NotFound("Нет данных для экспорта.");
-        }
-        return File(csvStream, "text/csv", "BankSecondData.csv");
     }
 
     /// <summary>

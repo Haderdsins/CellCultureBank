@@ -1,0 +1,76 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model CellCultureBank.BLL.Models.BankSecond.Create.CreateItemOfSecondBank
+
+@{
+    ViewData["Title"] = "Создать клетку";
+}
+
+<h2>Создать клетку</h2>
+
+<form asp-action="Create" method="post">
+    <div class="form-group">
+        <label asp-for="CellLine"></label>
+        <input asp-for="CellLine" class="form-control" />
+        <span asp-validation-for="CellLine" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Origin"></label>
+        <input asp-for="Origin" class="form-control" />
+        <span asp-validation-for="Origin" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="DateOfFreezing"></label>
+        <input asp-for="DateOfFreezing" class="form-control" type="date" />
+        <span asp-validation-for="DateOfFreezing" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="FrozenByFullName"></label>
+        <input asp-for="FrozenByFullName" class="form-control" />
+        <span asp-validation-for="FrozenByFullName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="DateOfDefrosting"></label>
+        <input asp-for="DateOfDefrosting" class="form-control" type="date" />
+        <span asp-validation-for="DateOfDefrosting" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="DefrostedByFullName"></label>
+        <input asp-for="DefrostedByFullName" class="form-control" />
+        <span asp-validation-for="DefrostedByFullName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Clearing"></label>
+        <input asp-for="Clearing" class="form-control" type="checkbox" />
+        <span asp-validation-for="Clearing" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Certification"></label>
+        <input asp-for="Certification" class="form-control" />
+        <span asp-validation-for="Certification" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Quantity"></label>
+        <input asp-for="Quantity" class="form-control" type="number" />
+        <span asp-validation-for="Quantity" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Address"></label>
+        <input asp-for="Address" class="form-control" />
+        <span asp-validation-for="Address" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Создать</button>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

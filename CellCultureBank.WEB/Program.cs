@@ -1,9 +1,12 @@
+using CellCultureBank.BLL.Services.BankFirst;
+using CellCultureBank.BLL.Services.BankSecond;
 using CellCultureBank.DAL.Database;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
-
+builder.Services.AddScoped<IBankSecondService, BankSecondService>();
+builder.Services.AddScoped<IBankFirstService, BankFirstService>();
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
@@ -37,4 +40,7 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
+app.MapControllerRoute(
+    name: "bank",
+    pattern: "{controller=Bank}/{action=Index}/{id?}");
 app.Run();

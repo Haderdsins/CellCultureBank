@@ -1,0 +1,46 @@
+﻿@model IEnumerable<CellCultureBank.DAL.Models.BankSecond>
+
+@{
+    ViewData["Title"] = "Банк #1";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Банк #1</h1>
+    <p>Список всех клеток банка:</p>
+    <a asp-controller="Bank" asp-action="Create" class="btn btn-primary mb-3">Создать новую клетку</a>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Клеточная линия</th>
+            <th>Происхождение</th>
+            <th>Дата заморозки</th>
+            <th>Кем заморожена</th>
+            <th>Дата разморозки</th>
+            <th>Кем разморожена</th>
+            <th>Отчистка</th>
+            <th>Паспортизация</th>
+            <th>Адрес</th>
+            <th>Количество</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.CellLine</td>
+                <td>@item.Origin</td>
+                <td>@item.DateOfFreezing</td>
+                <td>@item.FrozenByFullName</td>
+                <td>@item.DateOfDefrosting</td>
+                <td>@item.DefrostedByFullName</td>
+                <td>@item.Clearing</td>
+                <td>@item.Certification</td>
+                <td>@item.Address</td>
+                <td>@item.Quantity</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>

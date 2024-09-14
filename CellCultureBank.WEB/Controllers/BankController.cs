@@ -108,4 +108,14 @@ public class BankController: Controller
         _bankSecondService.Delete(id);
         return RedirectToAction("Index");
     }
+
+    public IActionResult GetOnDateOfDefrosting()
+    {
+        throw new NotImplementedException();
+    }
+
+    public IActionResult GetAllOnDateRangeOfDefrosting()
+    {
+        throw new NotImplementedException();
+    }
 }

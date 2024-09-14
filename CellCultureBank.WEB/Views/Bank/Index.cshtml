@@ -32,6 +32,8 @@ ViewData["Title"] = "Банк #1";
     <h1 class="display-4">Банк #1</h1>
     <p>Список всех клеток банка, количество записей: @Model.Count()</p>
     <a asp-controller="Bank" asp-action="Create" class="btn btn-primary mb-3">Создать</a>
+    <a asp-controller="Bank" asp-action="GetOnDateOfDefrosting" class="btn btn-warning mb-3">Диапазон заморозок</a>
+    <a asp-controller="Bank" asp-action="GetAllOnDateRangeOfDefrosting" class="btn btn-dark mb-3">Диапазон разморозок</a>
     <a href="@Url.Action("ExportToCsv", "Bank")" class="btn btn-success mb-3">Экспорт в CSV</a>
 
     <table class="table">

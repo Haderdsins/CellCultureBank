@@ -16,9 +16,9 @@ public class BankSecond : Entity
     
     public String DefrostedByFullName{ get; set; }//Кем разморожена
     
-    public bool? Clearing{ get; set; }//Отчистка
+    public bool Clearing{ get; set; }//Отчистка
     
-    public bool? Certification{ get; set; }//Паспортизация
+    public bool Certification{ get; set; }//Паспортизация
     
     public String Address{ get; set; }//Адрес
     

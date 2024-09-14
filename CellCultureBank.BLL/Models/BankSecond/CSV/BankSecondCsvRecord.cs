@@ -26,10 +26,10 @@ public class BankSecondCsvRecord
     public String? DefrostedByFullName{ get; set; }//Кем разморожена
     
     [Name("Отчистка")]
-    public bool? Clearing{ get; set; }//Отчистка
+    public bool Clearing{ get; set; }//Отчистка
     
     [Name("Паспортизация")]
-    public bool? Certification{ get; set; }//Паспортизация
+    public bool Certification{ get; set; }//Паспортизация
     
     [Name("Адрес")]
     public String? Address{ get; set; }//Адрес

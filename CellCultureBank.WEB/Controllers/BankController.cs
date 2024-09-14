@@ -33,20 +33,60 @@ public class BankController: Controller
         return View();
     }
     
-    [HttpPost]
-    public IActionResult Delete(int id)
+    /// <summary>
+    /// Страница редактирования клетки
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    [HttpGet]
+    public IActionResult Edit(int id)
     {
-        var item = _bankSecondService.GetAll().Where(p=>p.Id==id); // Получение элемента по id
-        if (item == null)
+        var bankCell = _bankSecondService.Get(id);
+        if (bankCell == null)
         {
             return NotFound();
         }
 
-        _bankSecondService.Delete(id); // Удаление клетки
-        return RedirectToAction("Index"); // Возвращение на главную страницу после удаления
+        // Преобразуем модель из базы данных в модель для представления
+        var model = new UpdateCellModel
+        { 
+            Id = bankCell.Id,
+            CellLine = bankCell.CellLine,
+            Clearing = bankCell.Clearing,
+            Certification = bankCell.Certification,
+            Address = bankCell.Address,
+            Quantity = bankCell.Quantity,
+            Origin = bankCell.Origin
+        };
+
+        return View(model);  // Отправляем в представление
+    }
+    /// <summary>
+    /// Метод редактирования клетки
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="model"></param>
+    /// <returns></returns>
+    [HttpPost]
+    public IActionResult Edit(int id, UpdateCellModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model); // Если модель недействительна, возвращаем её обратно
+        }
+
+        try
+        {
+            _bankSecondService.UpdateBankCell(id, model); // Обновляем данные клетки
+            return RedirectToAction("Index"); // После успешного обновления перенаправляем на список клеток
+        }
+        catch (Exception ex)
+        {
+            ModelState.AddModelError("", ex.Message);
+            return View(model); // Возвращаем модель с ошибкой обратно на страницу
+        }
     }
 
-    
     /// <summary>
     /// Эскпорт данных в CSV
     /// </summary>
@@ -63,5 +103,9 @@ public class BankController: Controller
     }
 
 
-    
+    public IActionResult Delete(int id)
+    {
+        _bankSecondService.Delete(id);
+        return RedirectToAction("Index");
+    }
 }

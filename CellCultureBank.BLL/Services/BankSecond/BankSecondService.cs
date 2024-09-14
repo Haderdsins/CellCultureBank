@@ -199,8 +199,8 @@ public class BankSecondService : IBankSecondService
                 FrozenByFullName = record.FrozenByFullName?? null,
                 DateOfDefrosting = record.DateOfDefrosting?? null,
                 DefrostedByFullName = record.DefrostedByFullName?? null,
-                Clearing = record.Clearing?? null,
-                Certification = record.Certification?? null,
+                Clearing = record.Clearing,
+                Certification = record.Certification,
                 Quantity = record.Quantity?? 0,
                 Address = record.Address?? null,
             }).ToList();
@@ -209,5 +209,26 @@ public class BankSecondService : IBankSecondService
             _dbSecondContext.BankSeconds.AddRange(bankSeconds);
             await _dbSecondContext.SaveChangesAsync();
         }
+    }
+
+    public void UpdateBankCell(int id, UpdateCellModel model)
+    {
+        var bankCell = _dbSecondContext.BankSeconds.Find(id);
+        
+        if (bankCell == null)
+        {
+            throw new ArgumentException($"Клетка с ID {id} не найдена.");
+        }
+
+        // Обновляем свойства клетки
+        bankCell.CellLine = model.CellLine;
+        bankCell.Clearing = model.Clearing;
+        bankCell.Certification = model.Certification;
+        bankCell.Address = model.Address;
+        bankCell.Quantity = model.Quantity;
+        bankCell.Origin = model.Origin;
+
+        // Сохраняем изменения
+        _dbSecondContext.SaveChanges();
     }
 }

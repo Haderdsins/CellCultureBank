@@ -33,4 +33,6 @@ public interface IBankSecondService
     Task<Stream> ExportToCsvAsync();
     
     Task ImportFromCsvAsync(Stream csvStream);
+    
+    void UpdateBankCell(int id, UpdateCellModel model);
 }

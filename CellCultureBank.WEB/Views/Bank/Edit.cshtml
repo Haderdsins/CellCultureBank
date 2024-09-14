@@ -1,0 +1,50 @@
+﻿@model CellCultureBank.BLL.Models.BankSecond.Update.UpdateCellModel
+
+@{
+    ViewBag.Title = $"Редактирование клетки №{Model.Id}";
+    Layout = "_Layout"; // Основной шаблон
+}
+
+<h2>Редактирование клетки №@Model.Id</h2>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+
+    <div class="form-group">
+        <label asp-for="CellLine">Клеточная линия</label>
+        <input asp-for="CellLine" class="form-control" />
+    </div>
+
+    <!-- Чекбокс для отчистки -->
+    <div class="form-group form-check">
+        <input asp-for="Clearing" class="form-check-input" type="checkbox" />
+        <label asp-for="Clearing" class="form-check-label">Отчистка</label>
+    </div>
+
+    <!-- Чекбокс для паспортизации -->
+    <div class="form-group form-check">
+        <input asp-for="Certification" class="form-check-input" type="checkbox" />
+        <label asp-for="Certification" class="form-check-label">Паспортизация</label>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Address">Адрес</label>
+        <input asp-for="Address" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Quantity">Количество</label>
+        <input asp-for="Quantity" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Origin">Происхождение</label>
+        <input asp-for="Origin" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-primary" style="margin-top: 8px;">Сохранить изменения</button>
+    <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger delete-btn" style="margin-top: 8px; float: right;">
+        Удалить
+    </a>
+    <a asp-action="Index" class="btn btn-secondary" style="margin-top: 8px;">Отмена</a>
+</form>

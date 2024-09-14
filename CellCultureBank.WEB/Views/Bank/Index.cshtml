@@ -1,16 +1,36 @@
 ﻿@model IEnumerable<CellCultureBank.DAL.Models.BankSecond>
 
 @{
-    ViewData["Title"] = "Банк #1";
+ViewData["Title"] = "Банк #1";
 }
+
+<style>
+    /* Стили для строки таблицы */
+    tr {
+        position: relative; /* Это позволит позиционировать крестик внутри строки */
+    }
+
+    /* По умолчанию скрываем кнопку удаления */
+    .delete-btn {
+        display: none;
+        position: absolute; /* Позиционируем кнопку относительно строки */
+        right: 0px; /* Располагаем кнопку справа */
+        top: 50%;
+        transform: translateY(-50%); /* Выравниваем кнопку по вертикали по центру строки */
+    }
+
+    /* Показываем кнопку при наведении на строку */
+    tr:hover .delete-btn {
+        display: inline;
+    }
+</style>
 
 <div class="text-center">
     <h1 class="display-4">Банк #1</h1>
     <p>Список всех клеток банка, количество записей: @Model.Count()</p>
     <a asp-controller="Bank" asp-action="Create" class="btn btn-primary mb-3">Создать</a>
     <a href="@Url.Action("ExportToCsv", "Bank")" class="btn btn-success mb-3">Экспорт в CSV</a>
-    
-    
+
     <table class="table">
         <thead>
         <tr>
@@ -30,28 +50,29 @@
         <tbody>
         @foreach (var item in Model)
         {
-            <tr>
-                <td>@item.Id</td>
-                <td>@item.CellLine</td>
-                <td>@item.Origin</td>
-                <td>@item.DateOfFreezing</td>
-                <td>@item.FrozenByFullName</td>
-                <td>@item.DateOfDefrosting</td>
-                <td>@item.DefrostedByFullName</td>
-                <td>@item.Clearing</td>
-                <td>@item.Certification</td>
-                <td>@item.Address</td>
-                <td>@item.Quantity</td>
-                <td>
-                    <form asp-action="Delete" method="post" onsubmit="return confirm('Вы уверены, что хотите удалить эту клетку?');" style="display:inline;">
-                        <input type="hidden" name="id" value="@item.Id" />
-                        <button type="submit" class="btn btn-link text-muted" style="font-size: 1.5rem; border: none; background: none; padding: 0;">
-                            <i class="fas fa-times"></i> <!-- Иконка крестика -->
-                        </button>
-                    </form>
-                </td>
-            </tr>
-            
+        <tr>
+            <td>@item.Id</td>
+            <td>@item.CellLine</td>
+            <td>@item.Origin</td>
+            <td>@item.DateOfFreezing</td>
+            <td>@item.FrozenByFullName</td>
+            <td>@item.DateOfDefrosting</td>
+            <td>@item.DefrostedByFullName</td>
+            <td>@item.Clearing</td>
+            <td>@item.Certification</td>
+            <td>@item.Address</td>
+            <td>@item.Quantity</td>
+
+            <!-- Кнопка удаления, скрытая по умолчанию, располагается справа от строки -->
+            <td>
+                <form asp-action="Delete" method="post" onsubmit="return confirm('Вы уверены, что хотите удалить эту клетку?');" style="display:inline;">
+                    <input type="hidden" name="id" value="@item.Id" />
+                    <button type="submit" class="btn btn-link text-muted delete-btn" style="font-size: 1.5rem; border: none; background: none; padding: 0;">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </form>
+            </td>
+        </tr>
         }
         </tbody>
     </table>

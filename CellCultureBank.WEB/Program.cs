@@ -1,12 +1,13 @@
-using CellCultureBank.BLL.Services.BankFirst;
-using CellCultureBank.BLL.Services.BankSecond;
+using CellCultureBank.BLL.Services.BankSecondCSV;
+using CellCultureBank.BLL.Services.BankSecondEntity;
 using CellCultureBank.DAL.Database;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddScoped<IBankSecondService, BankSecondService>();
-builder.Services.AddScoped<IBankFirstService, BankFirstService>();
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddScoped<IBankSecondEntityService, BankSecondEntityService>();
+builder.Services.AddScoped<IBankSecondCsvService, BankSecondCsvService>();
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
@@ -28,8 +29,8 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
-
 app.UseHttpsRedirection();
+
 app.UseStaticFiles();
 
 app.UseRouting();

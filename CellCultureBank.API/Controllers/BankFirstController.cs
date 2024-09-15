@@ -1,7 +1,8 @@
 ﻿using CellCultureBank.BLL.Models.Create;
 using CellCultureBank.BLL.Models.Delete;
 using CellCultureBank.BLL.Models.Update;
-using CellCultureBank.BLL.Services.BankFirst;
+using CellCultureBank.BLL.Services.BankFirstCSV;
+using CellCultureBank.BLL.Services.BankFirstEntity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CellCultureBank.API.Controllers;
@@ -10,11 +11,13 @@ namespace CellCultureBank.API.Controllers;
 [Route("[controller]")]
 public class BankFirstController : ControllerBase
 {
-    private readonly IBankFirstService _bankFirstService;
+    private readonly IBankFirstEntityService _bankFirstEntityService;
+    private readonly IBankFirstCsvService _bankFirstCsvService;
     
-    public BankFirstController(IBankFirstService bankFirstService)
+    public BankFirstController(IBankFirstEntityService bankFirstEntityService, IBankFirstCsvService bankFirstCsvService)
     {
-        _bankFirstService = bankFirstService;
+        _bankFirstEntityService = bankFirstEntityService;
+        _bankFirstCsvService = bankFirstCsvService;
     }
     /// <summary>
     /// Создать клетку
@@ -23,7 +26,7 @@ public class BankFirstController : ControllerBase
     [HttpPost("CreateItemOfBank")]
     public void CreateItemOfBank(CreateItemOfBankModel createItemOfBankModel)
     {
-        _bankFirstService.Create(createItemOfBankModel);
+        _bankFirstEntityService.Create(createItemOfBankModel);
     }
     /// <summary>
     /// Удалить клетку
@@ -32,7 +35,7 @@ public class BankFirstController : ControllerBase
     [HttpDelete("DeleteItemOfBank")]
     public void DeleteItemOfBank(DeleteItemOfBankModel deleteItemOfBankModelModel)
     {
-        _bankFirstService.Delete(deleteItemOfBankModelModel.Id);
+        _bankFirstEntityService.Delete(deleteItemOfBankModelModel.Id);
     }
     
     /// <summary>
@@ -41,7 +44,7 @@ public class BankFirstController : ControllerBase
     [HttpDelete("DeleteAllItemOfBank")]
     public void DeleteAllItemOfBank()
     {
-        _bankFirstService.DeleteAll();
+        _bankFirstEntityService.DeleteAll();
     }
 
     /// <summary>
@@ -52,7 +55,7 @@ public class BankFirstController : ControllerBase
     [HttpGet("GetItemOfBank")]
     public IActionResult GetItemOfBank(int BankId)//то что написано вот тут и запрашивается у клиента
     {
-        var itemOfBank = _bankFirstService.Get(BankId);
+        var itemOfBank = _bankFirstEntityService.Get(BankId);
         return Ok(itemOfBank) ;
     }
     
@@ -63,7 +66,7 @@ public class BankFirstController : ControllerBase
     [HttpGet("GetAllItemOfBank")]
     public IActionResult GetAllItemOfBank()
     {
-        var allItems = _bankFirstService.GetAll();
+        var allItems = _bankFirstEntityService.GetAll();
         return Ok(allItems);
     }
 
@@ -74,7 +77,7 @@ public class BankFirstController : ControllerBase
     [HttpGet("GetSortedDescendingItemsOfBank")]
     public IActionResult GetSortedDescendingItemsOfBank()
     {
-        var allSortDesItems = _bankFirstService.GetSortedDescendingItemsOfBank();
+        var allSortDesItems = _bankFirstEntityService.GetSortedDescendingItemsOfBank();
         return Ok(allSortDesItems);
     }
     
@@ -85,7 +88,7 @@ public class BankFirstController : ControllerBase
     [HttpGet("GetSortedItemsOfBank")]
     public IActionResult GetSortedItemsOfBank()
     {
-        var allSortItems = _bankFirstService.GetSortedItemsOfBank();
+        var allSortItems = _bankFirstEntityService.GetSortedItemsOfBank();
         return Ok(allSortItems);
     }
     
@@ -96,7 +99,7 @@ public class BankFirstController : ControllerBase
     [HttpGet("GetCountOfItems")]
     public int GetCountOfItems()
     {
-        return _bankFirstService.GetCountOfAllItems();
+        return _bankFirstEntityService.GetCountOfAllItems();
     }
 
     /// <summary>
@@ -107,7 +110,7 @@ public class BankFirstController : ControllerBase
     [HttpPut("UpdateItemOfBank")]
     public void UpdateItemOfBank(int BankId, UpdateItemOfBankModel updateItemOfBankModel)
     {
-        _bankFirstService.Update(BankId,updateItemOfBankModel);
+        _bankFirstEntityService.Update(BankId,updateItemOfBankModel);
     }
 
     /// <summary>
@@ -120,7 +123,7 @@ public class BankFirstController : ControllerBase
     [HttpGet("GetItemsOnDate")]
     public IActionResult GetItemsOnDate(int year, int mounth, int day)
     {
-        var result =  _bankFirstService.GetAllOnDate(year, mounth, day);
+        var result =  _bankFirstEntityService.GetAllOnDate(year, mounth, day);
         return Ok(result);
     }
 
@@ -137,7 +140,7 @@ public class BankFirstController : ControllerBase
     [HttpGet("GetItemsOnDateRange")]
     public IActionResult GetItemsOnDateRange(int yearStart, int mounthStart, int dayStart, int yearEnd, int mounthEnd, int dayEnd)
     {
-        var result = _bankFirstService.GetAllOnDateRange(yearStart, mounthStart, dayStart, yearEnd, mounthEnd, dayEnd);
+        var result = _bankFirstEntityService.GetAllOnDateRange(yearStart, mounthStart, dayStart, yearEnd, mounthEnd, dayEnd);
         return Ok(result);
     }
 
@@ -148,7 +151,7 @@ public class BankFirstController : ControllerBase
     [HttpGet("ExportToCsv")]
     public async Task<IActionResult> ExportToCsv()
     {
-        var csvStream = await _bankFirstService.ExportToCsvAsync();
+        var csvStream = await _bankFirstCsvService.ExportToCsvAsync();
         if (csvStream == null)
         {
             return NotFound("Нет данных для экспорта.");
@@ -171,7 +174,7 @@ public class BankFirstController : ControllerBase
 
         using (var stream = file.OpenReadStream())
         {
-            await _bankFirstService.ImportFromCsvAsync(stream);
+            await _bankFirstCsvService.ImportFromCsvAsync(stream);
         }
 
         return Ok("Данные успешно импортированы");

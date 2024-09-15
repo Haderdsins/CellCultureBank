@@ -1,28 +1,59 @@
 ﻿namespace CellCultureBank.DAL.Models;
 
-public class BankFirst : Entity
+public class BankFirst : Entity<int>
 {
-    public int Id { get; set; }//Id в таблице
+    /// <summary>
+    /// Дата
+    /// </summary>
+    public DateTime? Date { get; set; }
     
-    public DateTime? Date { get; set; }//Дата
-
-    public String Movement { get; set; }//Движение
+    /// <summary>
+    /// Движение
+    /// </summary>
+    public string Movement { get; set; }= null!;
     
-    public String Dewar { get; set; }//Дьюар
+    /// <summary>
+    /// Дьюар
+    /// </summary>
+    public string Dewar { get; set; }= null!;
     
-    public int Identifier { get; set; } //Общий идентификатор
+    /// <summary>
+    /// Общий идентификатор
+    /// </summary>
+    public int Identifier { get; set; }
     
-    public String NameOfCellCulture { get; set; }//Название культуры клеток
-
-    public String Passage { get; set; }//Пассаж
-
-    public int QuantityOnLabel { get; set; }//Количество на этикетке
+    /// <summary>
+    /// Название культуры клеток
+    /// </summary>
+    public string NameOfCellCulture { get; set; }
     
-    public int Quantity { get; set; }//Количество
+    /// <summary>
+    /// Пассаж
+    /// </summary>
+    public string Passage { get; set; }= null!;
     
-    public int ActualBalance { get; set; }//Фактический остаток
-
-    public String FullName { get; set; }//ФИО
+    /// <summary>
+    /// Количество на этикетке
+    /// </summary>
+    public int QuantityOnLabel { get; set; }
     
-    public String Note { get; set; }//Примечание
+    /// <summary>
+    /// Количество
+    /// </summary>
+    public int Quantity { get; set; }
+    
+    /// <summary>
+    /// Фактический остаток
+    /// </summary>
+    public int ActualBalance { get; set; }
+    
+    /// <summary>
+    /// ФИО
+    /// </summary>
+    public string FullName { get; set; }= null!;
+    
+    /// <summary>
+    /// Примечание
+    /// </summary>
+    public string? Note { get; set; }
 }

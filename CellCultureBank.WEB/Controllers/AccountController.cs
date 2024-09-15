@@ -1,4 +1,6 @@
 ﻿using System.Security.Claims;
+using System.Security.Cryptography;
+using System.Text;
 using CellCultureBank.DAL.Database;
 using CellCultureBank.DAL.Models;
 using CellCultureBank.WEB.Models;
@@ -17,7 +19,28 @@ public class AccountController: TodoBaseController
         {
             _context = context;
         }
-
+        /// <summary>
+        /// Вычисление хеш значения пароля
+        /// </summary>
+        /// <param name="password">Пароль</param>
+        /// <returns></returns>
+        private string HashPassword(string password)
+        {
+            using (SHA256 sha256 = SHA256.Create())
+            {
+                byte[] bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+                StringBuilder builder = new StringBuilder();
+                foreach (byte b in bytes)
+                {
+                    builder.Append(b.ToString("x2"));
+                }
+                return builder.ToString();
+            }
+        }
+        /// <summary>
+        /// Страница авторизации и регистрации
+        /// </summary>
+        /// <returns></returns>
         public IActionResult Index()
         {
             return View(new AccountViewModel
@@ -26,7 +49,7 @@ public class AccountController: TodoBaseController
                 RegisterViewModel = new RegisterViewModel()
             });
         }
-
+        
         [HttpGet]
         public IActionResult Login()
         {
@@ -49,21 +72,28 @@ public class AccountController: TodoBaseController
                 });
             }
 
-            var user = await _context.Users.FirstOrDefaultAsync(u =>
-                u.Login == model.Login && u.Password == model.Password);
-            if (user is null)
+            // Проверка пользователя по логину и хешированному паролю
+            if (model.Password != null)
             {
-                ViewBag.Error = "Некорректные логин и(или) пароль";
-                return View("Index", new AccountViewModel
+                var hashedPassword = HashPassword(model.Password);
+                var user = await _context.Users.FirstOrDefaultAsync(u => u.Login == model.Login && u.PasswordHash == hashedPassword);
+
+                if (user is null)
                 {
-                    LoginViewModel = model,
-                    RegisterViewModel = new RegisterViewModel()
-                });
+                    ViewBag.Error = "Некорректные логин и(или) пароль";
+                    return View("Index", new AccountViewModel
+                    {
+                        LoginViewModel = model,
+                        RegisterViewModel = new RegisterViewModel()
+                    });
+                }
+
+                await AuthenticateAsync(user);
             }
 
-            await AuthenticateAsync(user);
             return RedirectToAction("Index", "Home");
         }
+
 
 
         private async Task AuthenticateAsync(User user)
@@ -111,13 +141,15 @@ public class AccountController: TodoBaseController
                 });
             }
 
-            user = new User(model.Login ?? string.Empty, model?.Password ?? string.Empty);
+            // Создание нового пользователя с хешированным паролем
+            user = new User(model.Login ?? string.Empty, HashPassword(model?.Password ?? string.Empty), model.FullName ?? string.Empty);
             await _context.Users.AddAsync(user);
             await _context.SaveChangesAsync();
 
             await AuthenticateAsync(user);
             return RedirectToAction("Index", "Home");
         }
+
 
         public async Task<IActionResult> LogoutAsync()
         {

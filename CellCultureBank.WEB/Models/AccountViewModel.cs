@@ -20,6 +20,9 @@ public class LoginViewModel
 public class RegisterViewModel
 {
     [Required(ErrorMessage = "Данное поле обязательное")]
+    public string? FullName { get; set; }
+    
+    [Required(ErrorMessage = "Данное поле обязательное")]
     public string? Login { get; set; }
 
     [Required(ErrorMessage = "Данное поле обязательное")]

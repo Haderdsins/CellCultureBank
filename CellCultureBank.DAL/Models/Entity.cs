@@ -2,9 +2,9 @@
 
 public abstract class Entity<TPrimaryKey>
 {
+    /// <summary>
+    /// Первичный ключ сущности
+    /// </summary>
     public TPrimaryKey Id { get; set; }
 }
 
-public abstract class Entity : Entity<int>
-{
-}

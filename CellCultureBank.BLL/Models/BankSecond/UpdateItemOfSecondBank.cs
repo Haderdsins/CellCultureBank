@@ -1,6 +1,6 @@
 ﻿namespace CellCultureBank.BLL.Models.BankSecond.Update;
 
-public class UpdateItemByIdOfSecondBank
+public class UpdateItemOfSecondBank
 {
     public String CellLine{ get; set; }//Клеточная линия
     

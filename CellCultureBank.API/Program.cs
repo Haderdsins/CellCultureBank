@@ -1,13 +1,19 @@
-using CellCultureBank.BLL.Services.BankFirst;
-using CellCultureBank.BLL.Services.BankSecond;
+using CellCultureBank.BLL.Profile;
+using CellCultureBank.BLL.Services.BankFirstCSV;
+using CellCultureBank.BLL.Services.BankFirstEntity;
+using CellCultureBank.BLL.Services.BankSecondCSV;
+using CellCultureBank.BLL.Services.BankSecondEntity;
 using CellCultureBank.DAL.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddScoped<IBankSecondService, BankSecondService>();
-builder.Services.AddScoped<IBankFirstService, BankFirstService>();
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddScoped<IBankSecondEntityService, BankSecondEntityService>();
+builder.Services.AddScoped<IBankSecondCsvService, BankSecondCsvService>();
+builder.Services.AddScoped<IBankFirstEntityService, BankFirstEntityService>();
+builder.Services.AddScoped<IBankFirstCsvService, BankFirstCsvService>();
 builder.Services.AddControllers();
 // Add services to the container.
 
@@ -23,9 +29,9 @@ builder.Services.AddSwaggerGen(options =>
         Description = "Система, посредством которой производят последовательные серии продукции с использованием клеточных культур, принадлежащих одному и тому же главному банку клеток.",
 
     });
-    //как включить генерацию xml в меню не нашел, подключил вручную в файле проекта csproj
+    //Как включить генерацию xml в меню не нашел, подключил вручную в файле проекта csproj
     //в csproj указан файл генерации xml api1.xml
-    //также чтобы все работало подключается библиотека Swashbuckle.AspNetCore
+    //также чтобы все работало подключается библиотека Swashbuckle. AspNetCore
     var filePath = Path.Combine(System.AppContext.BaseDirectory, "api1.xml");
     options.IncludeXmlComments(filePath);
     
@@ -36,7 +42,6 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection"); //считываем строку подключения
 builder.Services.AddDbContext<BankDbContext>(opt =>
     opt.UseSqlServer(

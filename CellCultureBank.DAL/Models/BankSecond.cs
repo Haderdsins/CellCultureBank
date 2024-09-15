@@ -1,26 +1,54 @@
 ﻿namespace CellCultureBank.DAL.Models;
 
-public class BankSecond : Entity
+public class BankSecond : Entity<int>
 {
-    public int Id{ get; set; }//Id в таблице
+    /// <summary>
+    /// Клеточная линия
+    /// </summary>
+    public string CellLine { get; set; } = null!;
     
-    public String CellLine{ get; set; }//Клеточная линия
+    /// <summary>
+    /// Происхождение
+    /// </summary>
+    public string Origin{ get; set; }= null!;
     
-    public String Origin{ get; set; }//Происхождение
+    /// <summary>
+    /// Дата заморозки
+    /// </summary>
+    public DateTime? DateOfFreezing{ get; set; }
     
-    public DateTime? DateOfFreezing{ get; set; }//Дата заморозки
+    /// <summary>
+    /// Кем заморожена
+    /// </summary>
+    public string? FrozenByFullName{ get; set; }
     
-    public String FrozenByFullName{ get; set; }//Кем заморожена
+    /// <summary>
+    /// Дата разморозки
+    /// </summary>
+    public DateTime? DateOfDefrosting{ get; set; }
     
-    public DateTime? DateOfDefrosting{ get; set; }//Дата разморозки
+    /// <summary>
+    /// Кем разморожена
+    /// </summary>
+    public string? DefrostedByFullName{ get; set; }
     
-    public String DefrostedByFullName{ get; set; }//Кем разморожена
+    /// <summary>
+    /// Отчистка
+    /// </summary>
+    public bool Clearing{ get; set; }
     
-    public bool Clearing{ get; set; }//Отчистка
+    /// <summary>
+    /// Паспортизация
+    /// </summary>
+    public bool Certification{ get; set; }
     
-    public bool Certification{ get; set; }//Паспортизация
+    /// <summary>
+    /// Адрес
+    /// </summary>
+    public string Address{ get; set; }= null!;
     
-    public String Address{ get; set; }//Адрес
-    
-    public int? Quantity{ get; set; }//Количество
+    /// <summary>
+    /// Количество
+    /// </summary>
+    public int? Quantity{ get; set; }
 }

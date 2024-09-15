@@ -1,18 +1,21 @@
 ﻿using CellCultureBank.BLL.Models.BankSecond.Create;
 using CellCultureBank.BLL.Models.BankSecond.Update;
-using CellCultureBank.BLL.Services.BankSecond;
+using CellCultureBank.BLL.Services.BankSecondCSV;
+using CellCultureBank.BLL.Services.BankSecondEntity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
+
 
 namespace CellCultureBank.WEB.Controllers;
 
 public class BankController: Controller
 {
-    private readonly IBankSecondService _bankSecondService;
+    private readonly IBankSecondEntityService _bankSecondEntityService;
+    private readonly IBankSecondCsvService _bankSecondCsvService;
 
-    public BankController(IBankSecondService bankSecondService)
+    public BankController(IBankSecondEntityService bankSecondEntityService, IBankSecondCsvService bankSecondCsvService)
     {
-        _bankSecondService = bankSecondService;
+        _bankSecondEntityService = bankSecondEntityService;
+        _bankSecondCsvService = bankSecondCsvService;
     }
     /// <summary>
     /// Страница всех клеток
@@ -20,7 +23,7 @@ public class BankController: Controller
     /// <returns></returns>
     public IActionResult Index()
     {
-        var allItems = _bankSecondService.GetAll();
+        var allItems = _bankSecondEntityService.GetAll();
         return View(allItems);
     }
     /// <summary>
@@ -32,6 +35,24 @@ public class BankController: Controller
     {
         return View();
     }
+    /// <summary>
+    /// Метод создания клетки
+    /// </summary>
+    /// <param name="createItemOfSecondBank"></param>
+    /// <returns></returns>
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult Create(CreateItemOfSecondBank createItemOfSecondBank)
+    {
+        if (ModelState.IsValid)
+        {
+            _bankSecondEntityService.Create(createItemOfSecondBank);
+            return RedirectToAction("Index");  // Перенаправление на список клеток после добавления
+        }
+
+        // Если данные не валидны, возвращаем форму с ошибками
+        return View(createItemOfSecondBank);
+    }
     
     /// <summary>
     /// Страница редактирования клетки
@@ -41,7 +62,7 @@ public class BankController: Controller
     [HttpGet]
     public IActionResult Edit(int id)
     {
-        var bankCell = _bankSecondService.Get(id);
+        var bankCell = _bankSecondEntityService.Get(id);
         if (bankCell == null)
         {
             return NotFound();
@@ -77,7 +98,7 @@ public class BankController: Controller
 
         try
         {
-            _bankSecondService.UpdateBankCell(id, model); // Обновляем данные клетки
+            _bankSecondEntityService.UpdateBankCell(id, model); // Обновляем данные клетки
             return RedirectToAction("Index"); // После успешного обновления перенаправляем на список клеток
         }
         catch (Exception ex)
@@ -94,7 +115,7 @@ public class BankController: Controller
     [HttpGet("ExportToCsv")]
     public async Task<IActionResult> ExportToCsv()
     {
-        var csvStream = await _bankSecondService.ExportToCsvAsync();
+        var csvStream = await _bankSecondCsvService.ExportToCsvAsync();
         if (csvStream == null)
         {
             return NotFound("Нет данных для экспорта.");
@@ -105,7 +126,7 @@ public class BankController: Controller
 
     public IActionResult Delete(int id)
     {
-        _bankSecondService.Delete(id);
+        _bankSecondEntityService.Delete(id);
         return RedirectToAction("Index");
     }
 

@@ -1,15 +1,27 @@
 ﻿namespace CellCultureBank.DAL.Models;
 
-public class User : Entity
+public class User : Entity<int>
 {
     
-    public string Login { get; set; }
-    public string Password { get; set; }
     
-    public User(string login, string password)
+    /// <summary>
+    /// Логин
+    /// </summary>
+    public string Login { get; set; }
+    
+    /// <summary>
+    /// Хеш пароля
+    /// </summary>
+    public string PasswordHash { get; set; }
+    /// <summary>
+    /// ФИО пользователя
+    /// </summary>
+    public string FullName { get; set; }
+
+    public User(string login, string passwordHash, string fullName)
     {
         Login = login;
-        Password = password;
+        PasswordHash = passwordHash;
+        FullName = fullName;
     }
-    
 }

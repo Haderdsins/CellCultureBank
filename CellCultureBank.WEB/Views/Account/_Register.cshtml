@@ -9,6 +9,22 @@
             </span>
             <div class="form-floating">
                 <input
+                    asp-for="FullName"
+                    type="text"
+                    class="form-control"
+                    placeholder="Введите ФИО"/>
+                <label asp-for="Login" class="form-label">ФИО</label>
+            </div>
+        </div>
+        <span class="text-danger" asp-validation-for="FullName"></span>
+    </div>
+    <div class="mb-3">
+        <div class="input-group">
+            <span class="input-group-text">
+                <i class="fa-solid fa-user"></i>
+            </span>
+            <div class="form-floating">
+                <input
                     asp-for="Login"
                     type="text"
                     class="form-control"
@@ -24,7 +40,7 @@
                 <i class="fa-solid fa-lock"></i>
             </span>
             <div class="form-floating">
-                <input 
+                <input
                     asp-for="Password"
                     type="password"
                     class="form-control"
@@ -50,6 +66,6 @@
         </div>
         <span class="text-danger" asp-validation-for="RepeatPassword"></span>
     </div>
-    <div class="text-danger mb-2">@ViewBag.RegisterError</div> 
+    <div class="text-danger mb-2">@ViewBag.RegisterError</div>
     <button type="submit" class="btn btn-primary w-100">Создать аккаунт</button>
 </form>

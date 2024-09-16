@@ -3,6 +3,8 @@ using CellCultureBank.BLL.Models.BankSecond;
 using CellCultureBank.DAL.Database;
 using CellCultureBank.DAL.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CellCultureBank.BLL.Services.BankSecondEntity;
 
@@ -10,34 +12,28 @@ public class BankSecondEntityService : IBankSecondEntityService
 {
     private readonly BankDbContext _dbSecondContext;
     private readonly IMapper _secondBankMapper;
-    
 
     public BankSecondEntityService(BankDbContext dbContext, IMapper secondBankMapper)
     {
         _dbSecondContext = dbContext;
         _secondBankMapper = secondBankMapper;
     }
-    
-    public IEnumerable<BankSecond> GetAll()
-    {
-        return _dbSecondContext.BankSeconds.ToList();
-    }
-    
-    public void Create(CreateItemOfSecondBank model)
+
+    public Task Create(CreateItemOfSecondBank model)
     {
         var bankSecond = _secondBankMapper.Map<BankSecond>(model);
 
         _dbSecondContext.BankSeconds.Add(bankSecond);
-        _dbSecondContext.SaveChanges();
+        return _dbSecondContext.SaveChangesAsync();
     }
 
-    public void Delete(int BankId)
+    public Task Delete(int BankId)
     {
         var bankItemToDelete = _dbSecondContext.BankSeconds.Find(BankId);
-        if (bankItemToDelete!=null)
+        if (bankItemToDelete != null)
         {
             _dbSecondContext.BankSeconds.Remove(bankItemToDelete);
-            _dbSecondContext.SaveChanges();
+            return _dbSecondContext.SaveChangesAsync();
         }
         else
         {
@@ -45,23 +41,28 @@ public class BankSecondEntityService : IBankSecondEntityService
         }
     }
 
-    public BankSecond Get(int BankId)
+    public async Task<BankSecond> Get(int BankId)
     {
-        var bankItemToGet = _dbSecondContext.BankSeconds.Find(BankId);
-        if (bankItemToGet!=null)
+        var bankItemToGet = await _dbSecondContext.BankSeconds.FindAsync(BankId);
+        if (bankItemToGet != null)
         {
-            return bankItemToGet ;
+            return bankItemToGet;
         }
         throw new ArgumentException("Клетки с таким id не найдено");
     }
 
-    public void Update(int BankId, UpdateItemOfSecondBank model)
+    public async Task<IEnumerable<BankSecond>> GetAll()
+    {
+        return await _dbSecondContext.BankSeconds.ToListAsync();
+    }
+
+    public Task Update(int BankId, UpdateItemOfSecondBank model)
     {
         var bankItemToUpdate = _dbSecondContext.BankSeconds.Find(BankId);
-        if (bankItemToUpdate!=null)
+        if (bankItemToUpdate != null)
         {
             _secondBankMapper.Map(model, bankItemToUpdate);
-            _dbSecondContext.SaveChanges();
+            return _dbSecondContext.SaveChangesAsync();
         }
         else
         {
@@ -69,49 +70,56 @@ public class BankSecondEntityService : IBankSecondEntityService
         }
     }
 
-    public void DeleteAll()
+    public async Task DeleteAll()
     {
         _dbSecondContext.BankSeconds.RemoveRange(_dbSecondContext.BankSeconds);
-        _dbSecondContext.SaveChanges();
-        _dbSecondContext.Database.ExecuteSqlRaw("DBCC CHECKIDENT ('[BankSeconds]', RESEED, 0);");
-    }
-
-    public IEnumerable<BankSecond> GetSortedDescendingItemsOfBank()
-    {
-        return GetAll().OrderByDescending(p=>p.DateOfDefrosting);
-    }
-
-    public IEnumerable<BankSecond> GetSortedItemsOfBank()
-    {
-        return GetAll().OrderBy(p=>p.DateOfDefrosting);
-    }
-
-    public IEnumerable<BankSecond> GetAllOnDateOfDefrosting(int year, int month, int day)
-    {
-        return GetAll()
-            .Where(p => p.DateOfDefrosting != null && p.DateOfDefrosting.Value.Year ==year && p.DateOfDefrosting.Value.Month ==month && p.DateOfDefrosting.Value.Day == day);
-
-    }
-
-    public IEnumerable<BankSecond> GetAllOnDateRangeOfDefrosting(int yearStart, int monthStart, int dayStart, int yearEnd, int monthEnd, int dayEnd)
-    {
-        return GetAll()
-            .Where(p =>
-                p.DateOfDefrosting != null &&
-                p.DateOfDefrosting.Value.Year >= yearStart && p.DateOfDefrosting.Value.Year <= yearEnd &&
-                p.DateOfDefrosting.Value.Month >= monthStart && p.DateOfDefrosting.Value.Month <= monthEnd &&
-                p.DateOfDefrosting.Value.Day >= dayStart && p.DateOfDefrosting.Value.Day <= dayEnd
-            );
-    }
-
-    public int GetCountOfAllItems()
-    {
-        return GetAll().Count();
-    }
+        await _dbSecondContext.SaveChangesAsync();
     
-    public void UpdateBankCell(int id, UpdateCellModel model)
+        await _dbSecondContext.Database.ExecuteSqlRawAsync("DBCC CHECKIDENT ('[BankSeconds]', RESEED, 0)");
+    }
+
+
+    public async Task<IEnumerable<BankSecond>> GetSortedDescendingItemsOfBank()
     {
-        var bankCell = _dbSecondContext.BankSeconds.Find(id);
+        return await _dbSecondContext.BankSeconds.OrderByDescending(p => p.DateOfDefrosting).ToListAsync();
+    }
+
+    public async Task<IEnumerable<BankSecond>> GetSortedItemsOfBank()
+    {
+        return await _dbSecondContext.BankSeconds.OrderBy(p => p.DateOfDefrosting).ToListAsync();
+    }
+
+    public async Task<IEnumerable<BankSecond>> GetAllOnDateOfDefrosting(int year, int month, int day)
+    {
+        return await _dbSecondContext.BankSeconds
+            .Where(p => p.DateOfDefrosting.HasValue && 
+                        p.DateOfDefrosting.Value.Year == year &&
+                        p.DateOfDefrosting.Value.Month == month &&
+                        p.DateOfDefrosting.Value.Day == day)
+            .ToListAsync();
+    }
+
+    public async Task<IEnumerable<BankSecond>> GetAllOnDateRangeOfDefrosting(int yearStart, int monthStart, int dayStart, int yearEnd, int monthEnd, int dayEnd)
+    {
+        return await _dbSecondContext.BankSeconds
+            .Where(p => p.DateOfDefrosting.HasValue &&
+                        p.DateOfDefrosting.Value.Year >= yearStart &&
+                        p.DateOfDefrosting.Value.Year <= yearEnd &&
+                        p.DateOfDefrosting.Value.Month >= monthStart &&
+                        p.DateOfDefrosting.Value.Month <= monthEnd &&
+                        p.DateOfDefrosting.Value.Day >= dayStart &&
+                        p.DateOfDefrosting.Value.Day <= dayEnd)
+            .ToListAsync();
+    }
+
+    public async Task<int> GetCountOfAllItems()
+    {
+        return await _dbSecondContext.BankSeconds.CountAsync();
+    }
+
+    public async Task UpdateBankCell(int id, UpdateCellModel model)
+    {
+        var bankCell = await _dbSecondContext.BankSeconds.FindAsync(id);
         
         if (bankCell == null)
         {
@@ -127,6 +135,6 @@ public class BankSecondEntityService : IBankSecondEntityService
         bankCell.Origin = model.Origin;
 
         // Сохраняем изменения
-        _dbSecondContext.SaveChanges();
+        await _dbSecondContext.SaveChangesAsync();
     }
 }

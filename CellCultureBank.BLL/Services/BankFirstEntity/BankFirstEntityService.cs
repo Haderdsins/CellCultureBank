@@ -17,92 +17,100 @@ public class BankFirstEntityService : IBankFirstEntityService
         _firstBankMapper = firstBankMapper;
     }
 
-    public IEnumerable<BankFirst> GetAll()
+    public async Task<IEnumerable<BankFirst>> GetAll()
     {
-        return _dbContext.BankFirsts.ToList();
+        return await _dbContext.BankFirsts.ToListAsync();
     }
     
-    public void Create(CreateItemOfBankModel model)
+    public async Task Create(CreateItemOfBankModel model)
     {
-        var bankFirst = _firstBankMapper.Map<BankFirst>(model);
-        _dbContext.BankFirsts.Add(bankFirst);
-        _dbContext.SaveChanges();
+        try
+        {
+            var bankFirst = _firstBankMapper.Map<BankFirst>(model);
+            _dbContext.BankFirsts.Add(bankFirst);
+            await _dbContext.SaveChangesAsync();
+        }
+        catch (Exception)
+        {
+            throw new Exception();
+        }
     }
 
-    public void Delete(int BankId)
+    public async Task Delete(int BankId)
     {
-        var bankItemToDelete = _dbContext.BankFirsts.Find(BankId);
-        if (bankItemToDelete!=null)
+        var bankItemToDelete = await _dbContext.BankFirsts.FindAsync(BankId);
+        if (bankItemToDelete != null)
         {
             _dbContext.BankFirsts.Remove(bankItemToDelete);
-            _dbContext.SaveChanges();
+            await _dbContext.SaveChangesAsync();
         }
         else
         {
-            throw new ArgumentException("Клетка с таким id не найдена");
+            throw new ArgumentException("Клетка с таким id не найдена", nameof(BankId));
         }
     }
 
-    public BankFirst Get(int BankId)
+    public async Task<BankFirst> Get(int BankId)
     {
-        var bankItemToGet = _dbContext.BankFirsts.Find(BankId);
-        if (bankItemToGet!=null)
+        var bankItemToGet = await _dbContext.BankFirsts.FindAsync(BankId);
+        if (bankItemToGet != null)
         {
-            return bankItemToGet ;
+            return bankItemToGet;
         }
-        throw new ArgumentException("Клетки с таким id не найдено");
+        throw new ArgumentException("Клетки с таким id не найдено", nameof(BankId));
     }
     
     
-    public void Update(int BankId, UpdateItemOfBankModel model)
+    public async Task Update(int BankId, UpdateItemOfBankModel model)
     {
-        var bankItemToUpdate = _dbContext.BankFirsts.Find(BankId);
-        if (bankItemToUpdate!=null)
+        var bankItemToUpdate = await _dbContext.BankFirsts.FindAsync(BankId);
+        if (bankItemToUpdate != null)
         {
             _firstBankMapper.Map(model, bankItemToUpdate);
-            _dbContext.SaveChanges();
+            await _dbContext.SaveChangesAsync();
         }
         else
         {
-            throw new ArgumentException("Клетка с таким id не найдена");
+            throw new ArgumentException("Клетка с таким id не найдена", nameof(BankId));
         }
     }
 
-    public void DeleteAll()
+    public async Task DeleteAll()
     {
         _dbContext.BankFirsts.RemoveRange(_dbContext.BankFirsts);
-        _dbContext.SaveChanges();
-        _dbContext.Database.ExecuteSqlRaw("DBCC CHECKIDENT ('[BankFirsts]', RESEED, 0);");
+        await _dbContext.SaveChangesAsync();
+        await _dbContext.Database.ExecuteSqlRawAsync("DBCC CHECKIDENT ('[BankFirsts]', RESEED, 0);");
     }
 
-    public IEnumerable<BankFirst> GetSortedDescendingItemsOfBank()
+    public async Task<IEnumerable<BankFirst>> GetSortedDescendingItemsOfBank()
     {
-        return GetAll().OrderByDescending(p=>p.Date);
+        return await _dbContext.BankFirsts.OrderByDescending(p => p.Date).ToListAsync();
     }
-    public IEnumerable<BankFirst> GetSortedItemsOfBank()
+    public async Task<IEnumerable<BankFirst>> GetSortedItemsOfBank()
     {
-        return GetAll().OrderBy(p=>p.Date);
-    }
-
-    public IEnumerable<BankFirst> GetAllOnDate(int year, int mounth, int day)
-    {
-        return GetAll()
-            .Where(p => p.Date.Value.Year ==year &&  p.Date.Value.Month ==mounth && p.Date.Value.Day == day);
+        return await _dbContext.BankFirsts.OrderBy(p => p.Date).ToListAsync();
     }
 
-    public IEnumerable<BankFirst> GetAllOnDateRange(int yearStart, int mounthStart, int dayStart, int yearEnd, int mounthEnd, int dayEnd)
+    public async Task<IEnumerable<BankFirst>> GetAllOnDate(int year, int mounth, int day)
     {
-        return GetAll()
+        return await _dbContext.BankFirsts
+            .Where(p => p.Date.Value.Year == year && p.Date.Value.Month == mounth && p.Date.Value.Day == day)
+            .ToListAsync();
+    }
+
+    public async Task<IEnumerable<BankFirst>> GetAllOnDateRange(int yearStart, int mounthStart, int dayStart, int yearEnd, int mounthEnd, int dayEnd)
+    {
+        return await _dbContext.BankFirsts
             .Where(p =>
                 p.Date.Value.Year >= yearStart && p.Date.Value.Year <= yearEnd &&
                 p.Date.Value.Month >= mounthStart && p.Date.Value.Month <= mounthEnd &&
-                p.Date.Value.Day >= dayStart && p.Date.Value.Day <= dayEnd
-            );
+                p.Date.Value.Day >= dayStart && p.Date.Value.Day <= dayEnd)
+            .ToListAsync();
     }
 
 
-    public int GetCountOfAllItems()
+    public async Task<int> GetCountOfAllItems()
     {
-        return GetAll().Count();
+        return await _dbContext.BankFirsts.CountAsync();
     }
 }

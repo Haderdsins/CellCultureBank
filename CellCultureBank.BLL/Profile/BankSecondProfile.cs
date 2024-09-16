@@ -12,5 +12,6 @@ public class BankSecondProfile : AutoMapper.Profile
     {
         CreateMap<CreateItemOfSecondBank, BankSecond>();
         CreateMap<UpdateItemOfSecondBank, BankSecond>();
+        CreateMap<UpdateCellModel, BankSecond>();
     }
 }

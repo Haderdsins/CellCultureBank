@@ -19,32 +19,37 @@ public class BankFirstController : ControllerBase
         _bankFirstEntityService = bankFirstEntityService;
         _bankFirstCsvService = bankFirstCsvService;
     }
+
     /// <summary>
     /// Создать клетку
     /// </summary>
     /// <param name="createItemOfBankModel"></param>
     [HttpPost("CreateItemOfBank")]
-    public void CreateItemOfBank(CreateItemOfBankModel createItemOfBankModel)
+    public async Task<IActionResult> CreateItemOfBank(CreateItemOfBankModel createItemOfBankModel)
     {
-        _bankFirstEntityService.Create(createItemOfBankModel);
+        await _bankFirstEntityService.Create(createItemOfBankModel);
+        return Ok();
     }
+
     /// <summary>
     /// Удалить клетку
     /// </summary>
     /// <param name="deleteItemOfBankModelModel"></param>
     [HttpDelete("DeleteItemOfBank")]
-    public void DeleteItemOfBank(DeleteItemOfBankModel deleteItemOfBankModelModel)
+    public async Task<IActionResult> DeleteItemOfBank(int deleteItemOfBankModelModelId)
     {
-        _bankFirstEntityService.Delete(deleteItemOfBankModelModel.Id);
+        await _bankFirstEntityService.Delete(deleteItemOfBankModelModelId);
+        return Ok();
     }
-    
+
     /// <summary>
     /// Удалить все клетки
     /// </summary>
     [HttpDelete("DeleteAllItemOfBank")]
-    public void DeleteAllItemOfBank()
+    public async Task<IActionResult> DeleteAllItemOfBank()
     {
-        _bankFirstEntityService.DeleteAll();
+        await _bankFirstEntityService.DeleteAll();
+        return Ok();
     }
 
     /// <summary>
@@ -53,20 +58,20 @@ public class BankFirstController : ControllerBase
     /// <param name="getItemsOfBankModel"></param>
     /// <param name="BankId">Идентификатор клетки</param>
     [HttpGet("GetItemOfBank")]
-    public IActionResult GetItemOfBank(int BankId)//то что написано вот тут и запрашивается у клиента
+    public async Task<IActionResult> GetItemOfBank(int BankId)
     {
-        var itemOfBank = _bankFirstEntityService.Get(BankId);
-        return Ok(itemOfBank) ;
+        var itemOfBank = await _bankFirstEntityService.Get(BankId);
+        return Ok(itemOfBank);
     }
     
     /// <summary>
     /// Получить все клетки
     /// </summary>
-    /// <param name="getItemsOfBankModel"></param>
+    /// <returns></returns>
     [HttpGet("GetAllItemOfBank")]
-    public IActionResult GetAllItemOfBank()
+    public async Task<IActionResult> GetAllItemOfBank()
     {
-        var allItems = _bankFirstEntityService.GetAll();
+        var allItems = await _bankFirstEntityService.GetAll();
         return Ok(allItems);
     }
 
@@ -75,20 +80,20 @@ public class BankFirstController : ControllerBase
     /// </summary>
     /// <returns></returns>
     [HttpGet("GetSortedDescendingItemsOfBank")]
-    public IActionResult GetSortedDescendingItemsOfBank()
+    public async Task<IActionResult> GetSortedDescendingItemsOfBank()
     {
-        var allSortDesItems = _bankFirstEntityService.GetSortedDescendingItemsOfBank();
+        var allSortDesItems = await _bankFirstEntityService.GetSortedDescendingItemsOfBank();
         return Ok(allSortDesItems);
     }
     
     /// <summary>
-    ///  Получить все клетки (сортировка по дате на возрастание)
+    /// Получить все клетки (сортировка по дате на возрастание)
     /// </summary>
     /// <returns></returns>
     [HttpGet("GetSortedItemsOfBank")]
-    public IActionResult GetSortedItemsOfBank()
+    public async Task<IActionResult> GetSortedItemsOfBank()
     {
-        var allSortItems = _bankFirstEntityService.GetSortedItemsOfBank();
+        var allSortItems = await _bankFirstEntityService.GetSortedItemsOfBank();
         return Ok(allSortItems);
     }
     
@@ -97,9 +102,9 @@ public class BankFirstController : ControllerBase
     /// </summary>
     /// <returns></returns>
     [HttpGet("GetCountOfItems")]
-    public int GetCountOfItems()
+    public async Task<int> GetCountOfItems()
     {
-        return _bankFirstEntityService.GetCountOfAllItems();
+        return await _bankFirstEntityService.GetCountOfAllItems();
     }
 
     /// <summary>
@@ -108,9 +113,10 @@ public class BankFirstController : ControllerBase
     /// <param name="BankId">Идентификатор клетки</param>
     /// <param name="updateItemOfBankModel"></param>
     [HttpPut("UpdateItemOfBank")]
-    public void UpdateItemOfBank(int BankId, UpdateItemOfBankModel updateItemOfBankModel)
+    public async Task<IActionResult> UpdateItemOfBank(int BankId, UpdateItemOfBankModel updateItemOfBankModel)
     {
-        _bankFirstEntityService.Update(BankId,updateItemOfBankModel);
+        await _bankFirstEntityService.Update(BankId, updateItemOfBankModel);
+        return Ok();
     }
 
     /// <summary>
@@ -121,14 +127,14 @@ public class BankFirstController : ControllerBase
     /// <param name="day">День</param>
     /// <returns></returns>
     [HttpGet("GetItemsOnDate")]
-    public IActionResult GetItemsOnDate(int year, int mounth, int day)
+    public async Task<IActionResult> GetItemsOnDate(int year, int mounth, int day)
     {
-        var result =  _bankFirstEntityService.GetAllOnDate(year, mounth, day);
+        var result = await _bankFirstEntityService.GetAllOnDate(year, mounth, day);
         return Ok(result);
     }
 
     /// <summary>
-    /// Получить клетки в диапозоне дат
+    /// Получить клетки в диапазоне дат
     /// </summary>
     /// <param name="yearStart">Начальный год</param>
     /// <param name="mounthStart">Начальный месяц</param>
@@ -138,9 +144,9 @@ public class BankFirstController : ControllerBase
     /// <param name="dayEnd">Конечный день</param>
     /// <returns></returns>
     [HttpGet("GetItemsOnDateRange")]
-    public IActionResult GetItemsOnDateRange(int yearStart, int mounthStart, int dayStart, int yearEnd, int mounthEnd, int dayEnd)
+    public async Task<IActionResult> GetItemsOnDateRange(int yearStart, int mounthStart, int dayStart, int yearEnd, int mounthEnd, int dayEnd)
     {
-        var result = _bankFirstEntityService.GetAllOnDateRange(yearStart, mounthStart, dayStart, yearEnd, mounthEnd, dayEnd);
+        var result = await _bankFirstEntityService.GetAllOnDateRange(yearStart, mounthStart, dayStart, yearEnd, mounthEnd, dayEnd);
         return Ok(result);
     }
 

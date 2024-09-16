@@ -10,50 +10,50 @@ public interface IBankFirstEntityService
     /// Создание клетки
     /// </summary>
     /// <param name="model"></param>
-    void Create(CreateItemOfBankModel model);
+    Task Create(CreateItemOfBankModel model);
     
     /// <summary>
     /// Удалить клетку
     /// </summary>
     /// <param name="BankId"></param>
-    void Delete(int BankId);
+    Task Delete(int BankId);
     
     /// <summary>
     /// Получить клетку
     /// </summary>
     /// <param name="BankId">Id клетки</param>
     /// <returns></returns>
-    BankFirst Get(int BankId);
+    Task <BankFirst> Get(int BankId);
     
     /// <summary>
     /// Получить все клетки
     /// </summary>
     /// <returns></returns>
-    IEnumerable<BankFirst> GetAll(); 
+    Task<IEnumerable<BankFirst>> GetAll(); 
     
     /// <summary>
     /// Обновить данные о клетке
     /// </summary>
     /// <param name="BankId">Id клетки</param>
     /// <param name="model">Модель для обновления</param>
-    void Update(int BankId, UpdateItemOfBankModel model);
+    Task Update(int BankId, UpdateItemOfBankModel model);
 
     /// <summary>
     /// Удалить все клетки
     /// </summary>
-    void DeleteAll();
+    Task DeleteAll();
     
     /// <summary>
     /// Получить все клетки в отсортированном порядке по убыванию
     /// </summary>
     /// <returns></returns>
-    IEnumerable<BankFirst> GetSortedDescendingItemsOfBank();
+    Task<IEnumerable<BankFirst>> GetSortedDescendingItemsOfBank();
     
     /// <summary>
     /// Получить все клетки в отсортированном порядке по возрастанию
     /// </summary>
     /// <returns></returns>
-    IEnumerable<BankFirst> GetSortedItemsOfBank();
+    Task<IEnumerable<BankFirst>> GetSortedItemsOfBank();
     
     /// <summary>
     /// Получить все клетки по дате
@@ -62,7 +62,7 @@ public interface IBankFirstEntityService
     /// <param name="mounth">Месяц</param>
     /// <param name="day">День</param>
     /// <returns></returns>
-    IEnumerable<BankFirst> GetAllOnDate(int year, int mounth, int day);
+    Task<IEnumerable<BankFirst>> GetAllOnDate(int year, int mounth, int day);
     
     /// <summary>
     /// Получить все клетки в диапозоне дат
@@ -74,11 +74,11 @@ public interface IBankFirstEntityService
     /// <param name="mounthEnd">Конечный месяц</param>
     /// <param name="dayEnd">Конечный день</param>
     /// <returns></returns>
-    IEnumerable<BankFirst> GetAllOnDateRange(int yearStart, int mounthStart, int dayStart, int yearEnd, int mounthEnd, int dayEnd);
+    Task<IEnumerable<BankFirst>> GetAllOnDateRange(int yearStart, int mounthStart, int dayStart, int yearEnd, int mounthEnd, int dayEnd);
     
     /// <summary>
     /// Получить количество клеток
     /// </summary>
     /// <returns></returns>
-    int GetCountOfAllItems();
+    Task<int> GetCountOfAllItems();
 }

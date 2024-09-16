@@ -4,9 +4,10 @@ using CellCultureBank.BLL.Services.BankSecondEntity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CellCultureBank.API.Controllers;
+
 [ApiController]
 [Route("[controller]")]
-public class BankSecondController: ControllerBase
+public class BankSecondController : ControllerBase
 {
     private readonly IBankSecondEntityService _bankSecondEntityService;
     private readonly IBankSecondCsvService _bankSecondCsvService;
@@ -22,9 +23,10 @@ public class BankSecondController: ControllerBase
     /// </summary>
     /// <param name="createItemOfSecondBank"></param>
     [HttpPost("CreateItemOfSecondBank")]
-    public void CreateItemOfSecondBank(CreateItemOfSecondBank createItemOfSecondBank) 
+    public async Task<IActionResult> CreateItemOfSecondBank(CreateItemOfSecondBank createItemOfSecondBank)
     {
-        _bankSecondEntityService.Create(createItemOfSecondBank);
+        await _bankSecondEntityService.Create(createItemOfSecondBank);
+        return Ok();
     }
     
     /// <summary>
@@ -32,74 +34,70 @@ public class BankSecondController: ControllerBase
     /// </summary>
     /// <param name="id"></param>
     [HttpDelete("CreateItemOfSecondBank")]
-    public void CreateItemOfSecondBank(int id) 
+    public async Task<IActionResult> DeleteItemOfSecondBank(int id)
     {
-        _bankSecondEntityService.Delete(id);
+        await _bankSecondEntityService.Delete(id);
+        return Ok();
     }
-    
     
     /// <summary>
     /// Удалить все клетки
     /// </summary>
     [HttpDelete("DeleteAllItemOfBank")]
-    public void DeleteAllItemOfBank()
+    public async Task<IActionResult> DeleteAllItemOfBank()
     {
-        _bankSecondEntityService.DeleteAll();
+        await _bankSecondEntityService.DeleteAll();
+        return Ok();
     }
 
     /// <summary>
     /// Получить клетку по id
     /// </summary>
-    /// <param name="getItemsOfBankModel"></param>
     /// <param name="BankId">Идентификатор клетки</param>
     [HttpGet("GetItemOfBank")]
-    public IActionResult GetItemOfBank(int BankId)//то что написано вот тут и запрашивается у клиента
+    public async Task<IActionResult> GetItemOfBank(int BankId)
     {
-        var itemOfBank = _bankSecondEntityService.Get(BankId);
-        return Ok(itemOfBank) ;
+        var itemOfBank = await _bankSecondEntityService.Get(BankId);
+        return Ok(itemOfBank);
     }
-    
+
     /// <summary>
     /// Получить все клетки
     /// </summary>
-    /// <param name="getItemsOfBankModel"></param>
     [HttpGet("GetAllItemOfBank")]
-    public IActionResult GetAllItemOfBank()
+    public async Task<IActionResult> GetAllItemOfBank()
     {
-        var allItems = _bankSecondEntityService.GetAll();
+        var allItems = await _bankSecondEntityService.GetAll();
         return Ok(allItems);
     }
 
     /// <summary>
     /// Получить все клетки (сортировка по дате на убывание)
     /// </summary>
-    /// <returns></returns>
     [HttpGet("GetSortedDescendingItemsOfBank")]
-    public IActionResult GetSortedDescendingItemsOfBank()
+    public async Task<IActionResult> GetSortedDescendingItemsOfBank()
     {
-        var allSortDesItems = _bankSecondEntityService.GetSortedDescendingItemsOfBank();
+        var allSortDesItems = await _bankSecondEntityService.GetSortedDescendingItemsOfBank();
         return Ok(allSortDesItems);
     }
     
     /// <summary>
-    ///  Получить все клетки (сортировка по дате на возрастание)
+    /// Получить все клетки (сортировка по дате на возрастание)
     /// </summary>
-    /// <returns></returns>
     [HttpGet("GetSortedItemsOfBank")]
-    public IActionResult GetSortedItemsOfBank()
+    public async Task<IActionResult> GetSortedItemsOfBank()
     {
-        var allSortItems = _bankSecondEntityService.GetSortedItemsOfBank();
+        var allSortItems = await _bankSecondEntityService.GetSortedItemsOfBank();
         return Ok(allSortItems);
     }
-    
+
     /// <summary>
     /// Получить количество записей
     /// </summary>
-    /// <returns></returns>
     [HttpGet("GetCountOfItems")]
-    public int GetCountOfItems()
+    public async Task<int> GetCountOfItems()
     {
-        return _bankSecondEntityService.GetCountOfAllItems();
+        return await _bankSecondEntityService.GetCountOfAllItems();
     }
 
     /// <summary>
@@ -108,46 +106,46 @@ public class BankSecondController: ControllerBase
     /// <param name="BankId">Идентификатор клетки</param>
     /// <param name="updateItemOfBankModel"></param>
     [HttpPut("UpdateItemOfBank")]
-    public void UpdateItemOfBank(int BankId, UpdateItemOfSecondBank updateItemOfBankModel)
+    public async Task<IActionResult> UpdateItemOfBank(int BankId, UpdateItemOfSecondBank updateItemOfBankModel)
     {
-        _bankSecondEntityService.Update(BankId,updateItemOfBankModel);
+        await _bankSecondEntityService.Update(BankId, updateItemOfBankModel);
+        return Ok();
     }
 
     /// <summary>
     /// Получить клетки по дате разморозки
     /// </summary>
     /// <param name="year">Год</param>
-    /// <param name="mounth">Месяц</param>
+    /// <param name="month">Месяц</param>
     /// <param name="day">День</param>
-    /// <returns></returns>
     [HttpGet("GetItemsOnDateOfDefrosting")]
-    public IActionResult GetItemsOnDate(int year, int mounth, int day)
+    public async Task<IActionResult> GetItemsOnDate(int year, int month, int day)
     {
-        var result =  _bankSecondEntityService.GetAllOnDateOfDefrosting(year, mounth, day);
+        var result = await _bankSecondEntityService.GetAllOnDateOfDefrosting(year, month, day);
         return Ok(result);
     }
 
     /// <summary>
-    /// Получить клетки в диапозоне дат разморозок
+    /// Получить клетки в диапазоне дат разморозки
     /// </summary>
     /// <param name="yearStart">Начальный год</param>
-    /// <param name="mounthStart">Начальный месяц</param>
+    /// <param name="monthStart">Начальный месяц</param>
     /// <param name="dayStart">Начальный день</param>
     /// <param name="yearEnd">Конечный год</param>
-    /// <param name="mounthEnd">Конечный месяц</param>
+    /// <param name="monthEnd">Конечный месяц</param>
     /// <param name="dayEnd">Конечный день</param>
-    /// <returns></returns>
     [HttpGet("GetItemsOnDateRangeOfDefrosting")]
-    public IActionResult GetItemsOnDateRangeOfDefrosting(int yearStart, int mounthStart, int dayStart, int yearEnd, int mounthEnd, int dayEnd)
+    public async Task<IActionResult> GetItemsOnDateRangeOfDefrosting(
+        int yearStart, int monthStart, int dayStart, int yearEnd, int monthEnd, int dayEnd)
     {
-        var result = _bankSecondEntityService.GetAllOnDateRangeOfDefrosting(yearStart, mounthStart, dayStart, yearEnd, mounthEnd, dayEnd);
+        var result = await _bankSecondEntityService.GetAllOnDateRangeOfDefrosting(
+            yearStart, monthStart, dayStart, yearEnd, monthEnd, dayEnd);
         return Ok(result);
     }
 
     /// <summary>
     /// Экспорт данных в CSV
     /// </summary>
-    /// <returns></returns>
     [HttpGet("ExportToCsv")]
     public async Task<IActionResult> ExportToCsv()
     {
@@ -163,7 +161,6 @@ public class BankSecondController: ControllerBase
     /// Импорт файла CSV
     /// </summary>
     /// <param name="file"></param>
-    /// <returns></returns>
     [HttpPost("ImportFromCsv")]
     public async Task<IActionResult> ImportToCsv(IFormFile file)
     {

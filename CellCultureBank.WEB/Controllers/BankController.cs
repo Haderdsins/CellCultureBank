@@ -3,10 +3,9 @@ using CellCultureBank.BLL.Services.BankSecondCSV;
 using CellCultureBank.BLL.Services.BankSecondEntity;
 using Microsoft.AspNetCore.Mvc;
 
-
 namespace CellCultureBank.WEB.Controllers;
 
-public class BankController: Controller
+public class BankController : Controller
 {
     private readonly IBankSecondEntityService _bankSecondEntityService;
     private readonly IBankSecondCsvService _bankSecondCsvService;
@@ -16,15 +15,17 @@ public class BankController: Controller
         _bankSecondEntityService = bankSecondEntityService;
         _bankSecondCsvService = bankSecondCsvService;
     }
+
     /// <summary>
     /// Страница всех клеток
     /// </summary>
     /// <returns></returns>
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-        var allItems = _bankSecondEntityService.GetAll();
+        var allItems = await _bankSecondEntityService.GetAll();
         return View(allItems);
     }
+
     /// <summary>
     /// Страница создания новой клетки
     /// </summary>
@@ -34,6 +35,7 @@ public class BankController: Controller
     {
         return View();
     }
+
     /// <summary>
     /// Метод создания клетки
     /// </summary>
@@ -41,35 +43,33 @@ public class BankController: Controller
     /// <returns></returns>
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult Create(CreateItemOfSecondBank createItemOfSecondBank)
+    public async Task<IActionResult> Create(CreateItemOfSecondBank createItemOfSecondBank)
     {
-        if (ModelState.IsValid)
+        if (!ModelState.IsValid)
         {
-            _bankSecondEntityService.Create(createItemOfSecondBank);
-            return RedirectToAction("Index");  // Перенаправление на список клеток после добавления
+            return View(createItemOfSecondBank);
         }
 
-        // Если данные не валидны, возвращаем форму с ошибками
-        return View(createItemOfSecondBank);
+        await _bankSecondEntityService.Create(createItemOfSecondBank);
+        return RedirectToAction("Index");
     }
-    
+
     /// <summary>
     /// Страница редактирования клетки
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpGet]
-    public IActionResult Edit(int id)
+    public async Task<IActionResult> Edit(int id)
     {
-        var bankCell = _bankSecondEntityService.Get(id);
+        var bankCell = await _bankSecondEntityService.Get(id);
         if (bankCell == null)
         {
             return NotFound();
         }
 
-        // Преобразуем модель из базы данных в модель для представления
         var model = new UpdateCellModel
-        { 
+        {
             Id = bankCell.Id,
             CellLine = bankCell.CellLine,
             Clearing = bankCell.Clearing,
@@ -79,8 +79,9 @@ public class BankController: Controller
             Origin = bankCell.Origin
         };
 
-        return View(model);  // Отправляем в представление
+        return View(model);
     }
+
     /// <summary>
     /// Метод редактирования клетки
     /// </summary>
@@ -88,23 +89,16 @@ public class BankController: Controller
     /// <param name="model"></param>
     /// <returns></returns>
     [HttpPost]
-    public IActionResult Edit(int id, UpdateCellModel model)
+    public async Task<IActionResult> Edit(int id, UpdateCellModel model)
     {
         if (!ModelState.IsValid)
         {
-            return View(model); // Если модель недействительна, возвращаем её обратно
+            return View(model);
         }
 
-        try
-        {
-            _bankSecondEntityService.UpdateBankCell(id, model); // Обновляем данные клетки
-            return RedirectToAction("Index"); // После успешного обновления перенаправляем на список клеток
-        }
-        catch (Exception ex)
-        {
-            ModelState.AddModelError("", ex.Message);
-            return View(model); // Возвращаем модель с ошибкой обратно на страницу
-        }
+        await _bankSecondEntityService.UpdateBankCell(id, model);
+
+        return RedirectToAction("Index");
     }
 
     /// <summary>
@@ -121,7 +115,6 @@ public class BankController: Controller
         }
         return File(csvStream, "text/csv", "BankSecondData.csv");
     }
-
 
     public IActionResult Delete(int id)
     {

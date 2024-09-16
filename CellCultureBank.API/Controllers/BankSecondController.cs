@@ -1,5 +1,4 @@
-﻿using CellCultureBank.BLL.Models.BankSecond.Create;
-using CellCultureBank.BLL.Models.BankSecond.Update;
+﻿using CellCultureBank.BLL.Models.BankSecond;
 using CellCultureBank.BLL.Services.BankSecondCSV;
 using CellCultureBank.BLL.Services.BankSecondEntity;
 using Microsoft.AspNetCore.Mvc;

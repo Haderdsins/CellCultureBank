@@ -1,5 +1,7 @@
-﻿namespace CellCultureBank.BLL.Models.BankSecond.Create;
-
+﻿namespace CellCultureBank.BLL.Models.BankSecond;
+/// <summary>
+/// Модель создания клетки для второго банка
+/// </summary>
 public class CreateItemOfSecondBank
 {
     public String CellLine{ get; set; }//Клеточная линия

@@ -13,6 +13,7 @@ public class User : Entity<int>
     /// Хеш пароля
     /// </summary>
     public string PasswordHash { get; set; }
+    
     /// <summary>
     /// ФИО пользователя
     /// </summary>

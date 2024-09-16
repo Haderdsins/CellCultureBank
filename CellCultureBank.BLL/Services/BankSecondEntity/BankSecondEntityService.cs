@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
-using CellCultureBank.BLL.Models.BankSecond.Create;
-using CellCultureBank.BLL.Models.BankSecond.Update;
+using CellCultureBank.BLL.Models.BankSecond;
 using CellCultureBank.DAL.Database;
 using CellCultureBank.DAL.Models;
 using Microsoft.EntityFrameworkCore;

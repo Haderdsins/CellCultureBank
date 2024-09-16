@@ -16,7 +16,7 @@ public class BankFirstCsvService : IBankFirstCsvService
     {
         _dbContext = dbContext;
     }
-    
+
     public async Task<Stream> ExportToCsvAsync()
     {
         var items = _dbContext.BankFirsts
@@ -57,6 +57,7 @@ public class BankFirstCsvService : IBankFirstCsvService
 
         return stream;
     }
+
 
     public async Task ImportFromCsvAsync(Stream csvStream)
     {

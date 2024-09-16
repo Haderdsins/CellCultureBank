@@ -1,7 +1,9 @@
 ﻿using CsvHelper.Configuration.Attributes;
 
-namespace CellCultureBank.BLL.Models.BankSecond.CSV;
-
+namespace CellCultureBank.BLL.Models.BankSecond;
+/// <summary>
+/// Модель записи таблицы в CSV
+/// </summary>
 public class BankSecondCsvRecord
 {
     

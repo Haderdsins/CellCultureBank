@@ -1,5 +1,7 @@
 ﻿namespace CellCultureBank.BLL.Models.Create;
-
+/// <summary>
+/// Модель создания клетки первого банка
+/// </summary>
 public class CreateItemOfBankModel
 {
     public DateTime Date { get; set; }//Дата

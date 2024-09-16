@@ -1,5 +1,7 @@
-﻿namespace CellCultureBank.BLL.Models.BankSecond.Update;
-
+﻿namespace CellCultureBank.BLL.Models.BankSecond;
+/// <summary>
+/// Модель обновления клетки второго банка, без дат разморозки и заморозки
+/// </summary>
 public class UpdateCellModel
 {
     public int Id { get; set; }

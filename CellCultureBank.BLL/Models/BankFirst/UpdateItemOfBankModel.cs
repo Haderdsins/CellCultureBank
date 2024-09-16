@@ -1,5 +1,7 @@
 ﻿namespace CellCultureBank.BLL.Models.Update;
-
+/// <summary>
+/// Модель обновления клетки 
+/// </summary>
 public class UpdateItemOfBankModel
 {
     public DateTime Date { get; set; }//Дата

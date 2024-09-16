@@ -1,5 +1,7 @@
 ﻿namespace CellCultureBank.BLL.Models.Get;
-
+/// <summary>
+/// Модель получения клетки
+/// </summary>
 public class GetItemsOfBankModel
 {
     public int Id { get; set; }//Id в таблице

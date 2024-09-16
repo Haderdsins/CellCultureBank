@@ -1,10 +1,11 @@
-﻿using CellCultureBank.BLL.Models.BankSecond.Create;
-using CellCultureBank.BLL.Models.BankSecond.Update;
+﻿using CellCultureBank.BLL.Models.BankSecond;
 using CellCultureBank.BLL.Models.Update;
 using CellCultureBank.DAL.Models;
 
 namespace CellCultureBank.BLL.Profile;
-
+/// <summary>
+/// Настройка профиля automapper второго банка
+/// </summary>
 public class BankSecondProfile : AutoMapper.Profile
 {
     public BankSecondProfile()

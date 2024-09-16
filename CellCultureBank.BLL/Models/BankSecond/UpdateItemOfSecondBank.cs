@@ -1,5 +1,7 @@
-﻿namespace CellCultureBank.BLL.Models.BankSecond.Update;
-
+﻿namespace CellCultureBank.BLL.Models.BankSecond;
+/// <summary>
+/// Модель обновления клетки
+/// </summary>
 public class UpdateItemOfSecondBank
 {
     public String CellLine{ get; set; }//Клеточная линия

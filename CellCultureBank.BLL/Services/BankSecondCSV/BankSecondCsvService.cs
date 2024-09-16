@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 using System.Text;
-using CellCultureBank.BLL.Models.BankSecond.CSV;
+using CellCultureBank.BLL.Models.BankSecond;
 using CellCultureBank.DAL.Database;
 using CellCultureBank.DAL.Models;
 using CsvHelper;

@@ -67,22 +67,23 @@ public class BankSecondCsvService : IBankSecondCsvService
         using (var reader = new StreamReader(csvStream))
         using (var csv = new CsvReader(reader, csvConfig))
         {
-            // Считывание данных из CSV в BankFirstCsvRecord
+            // Считывание данных из CSV в BankSecondCsvRecord
             var records = csv.GetRecords<BankSecondCsvRecord>().ToList();
 
-            // Преобразование записей в модели для БД
+            // Преобразование записей в модели для БД, исключая ID
             var bankSeconds = records.Select(record => new BankSecond()
             {
-                CellLine = record.CellLine?? null,
-                Origin = record.Origin?? null,
-                DateOfFreezing = record.DateOfFreezing?? null,
-                FrozenByFullName = record.FrozenByFullName?? null,
-                DateOfDefrosting = record.DateOfDefrosting?? null,
-                DefrostedByFullName = record.DefrostedByFullName?? null,
+                // Не задаем поле ID, чтобы база данных его сгенерировала
+                CellLine = record.CellLine ?? null,
+                Origin = record.Origin ?? null,
+                DateOfFreezing = record.DateOfFreezing ?? null,
+                FrozenByFullName = record.FrozenByFullName ?? null,
+                DateOfDefrosting = record.DateOfDefrosting ?? null,
+                DefrostedByFullName = record.DefrostedByFullName ?? null,
                 Clearing = record.Clearing,
                 Certification = record.Certification,
-                Quantity = record.Quantity?? 0,
-                Address = record.Address?? null,
+                Quantity = record.Quantity ?? 0,
+                Address = record.Address ?? null
             }).ToList();
 
             // Добавление данных в базу
@@ -90,4 +91,5 @@ public class BankSecondCsvService : IBankSecondCsvService
             await _dbSecondContext.SaveChangesAsync();
         }
     }
+
 }

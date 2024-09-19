@@ -5,6 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CellCultureBank.WEB.Controllers;
 
+/// <summary>
+/// Контроллер взаимодествия в банком клеточных культур
+/// </summary>
 public class BankController : Controller
 {
     private readonly IBankSecondEntityService _bankSecondEntityService;
@@ -114,6 +117,26 @@ public class BankController : Controller
             return NotFound("Нет данных для экспорта.");
         }
         return File(csvStream, "text/csv", "BankSecondData.csv");
+    }
+    
+    /// <summary>
+    /// Импорт файла CSV
+    /// </summary>
+    /// <param name="file"></param>
+    [HttpPost("Bank/ImportFromCsv")]
+    public async Task<IActionResult> ImportToCsv(IFormFile file)
+    {
+        if (file == null || file.Length == 0)
+        {
+            return BadRequest("Файл не был загружен или пуст");
+        }
+
+        using (var stream = file.OpenReadStream())
+        {
+            await _bankSecondCsvService.ImportFromCsvAsync(stream);
+        }
+
+        return RedirectToAction("Index");
     }
 
     public IActionResult Delete(int id)

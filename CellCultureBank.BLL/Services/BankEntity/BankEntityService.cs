@@ -4,30 +4,49 @@ using CellCultureBank.DAL;
 using CellCultureBank.DAL.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace CellCultureBank.BLL.Services.BankSecondEntity;
 
-public class BankSecondEntityService : IBankSecondEntityService
+namespace CellCultureBank.BLL.Services.BankEntity;
+
+public class BankEntityService : IBankEntityService
 {
     private readonly BankDbContext _dbSecondContext;
     private readonly IMapper _secondBankMapper;
 
-    public BankSecondEntityService(BankDbContext dbContext, IMapper secondBankMapper)
+    public BankEntityService(BankDbContext dbContext, IMapper secondBankMapper)
     {
         _dbSecondContext = dbContext;
         _secondBankMapper = secondBankMapper;
     }
 
-    public Task Create(CreateItemOfBank model)
+    public async Task Create(CreateItemOfBank model)
     {
+        //Проверка есть ли такой пользователь заморозки
+        if (model.FrozenByUserId.HasValue)
+        {
+            var userExists = await _dbSecondContext.Users.AnyAsync(u => u.Id == model.FrozenByUserId.Value);
+            if (!userExists)
+            {
+                throw new ArgumentException($"Пользователь заморозки с ID {model.FrozenByUserId} не найден.");
+            }
+        }
+        //Проверка есть ли такой пользователь разморозки
+        if (model.DefrostedByUserId.HasValue)
+        {
+            var userExists = await _dbSecondContext.Users.AnyAsync(u => u.Id == model.DefrostedByUserId.Value);
+            if (!userExists)
+            {
+                throw new ArgumentException($"Пользователь разморозки с ID {model.DefrostedByUserId} не найден.");
+            }
+        }
+        
         var bankSecond = _secondBankMapper.Map<BankOfCell>(model);
-
-        _dbSecondContext.BankOfCells.Add(bankSecond);
-        return _dbSecondContext.SaveChangesAsync();
+        await _dbSecondContext.BankOfCells.AddAsync(bankSecond);
+        await _dbSecondContext.SaveChangesAsync();
     }
 
-    public Task Delete(int BankId)
+    public Task Delete(int bankId)
     {
-        var bankItemToDelete = _dbSecondContext.BankOfCells.Find(BankId);
+        var bankItemToDelete = _dbSecondContext.BankOfCells.Find(bankId);
         if (bankItemToDelete != null)
         {
             _dbSecondContext.BankOfCells.Remove(bankItemToDelete);
@@ -39,9 +58,9 @@ public class BankSecondEntityService : IBankSecondEntityService
         }
     }
 
-    public async Task<BankOfCell> Get(int BankId)
+    public async Task<BankOfCell> Get(int bankId)
     {
-        var bankItemToGet = await _dbSecondContext.BankOfCells.FindAsync(BankId);
+        var bankItemToGet = await _dbSecondContext.BankOfCells.FindAsync(bankId);
         if (bankItemToGet != null)
         {
             return bankItemToGet;
@@ -51,15 +70,12 @@ public class BankSecondEntityService : IBankSecondEntityService
 
     public async Task<IEnumerable<BankOfCell>> GetAll()
     {
-        return await _dbSecondContext.BankOfCells
-            .Include(b => b.FrozenByUser) // Загружаем пользователя, который заморозил клетку
-            .Include(b => b.DefrostedByUser) // Загружаем пользователя, который разморозил клетку
-            .ToListAsync();
+        return await _dbSecondContext.BankOfCells.ToListAsync();
     }
 
-    public Task Update(int BankId, UpdateItemOfBank model)
+    public Task Update(int bankId, UpdateItemOfBank model)
     {
-        var bankItemToUpdate = _dbSecondContext.BankOfCells.Find(BankId);
+        var bankItemToUpdate = _dbSecondContext.BankOfCells.Find(bankId);
         if (bankItemToUpdate != null)
         {
             _secondBankMapper.Map(model, bankItemToUpdate);
@@ -68,16 +84,7 @@ public class BankSecondEntityService : IBankSecondEntityService
         throw new ArgumentException("Клетка с таким id не найдена");
         
     }
-
-    public async Task DeleteAll()
-    {
-        _dbSecondContext.BankOfCells.RemoveRange(_dbSecondContext.BankOfCells);
-        await _dbSecondContext.SaveChangesAsync();
     
-        await _dbSecondContext.Database.ExecuteSqlRawAsync("DBCC CHECKIDENT ('[BankSeconds]', RESEED, 0)");
-    }
-
-
     public async Task<IEnumerable<BankOfCell>> GetSortedDescendingItemsOfBank()
     {
         return await _dbSecondContext.BankOfCells.OrderByDescending(p => p.DateOfDefrosting).ToListAsync();

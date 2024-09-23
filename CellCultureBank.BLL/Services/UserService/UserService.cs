@@ -2,7 +2,7 @@
 using CellCultureBank.DAL.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace CellCultureBank.BLL.Profile.Services.UserService;
+namespace CellCultureBank.BLL.Services.UserService;
 
 public class UserService : IUserService
 {

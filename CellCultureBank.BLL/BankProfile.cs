@@ -1,7 +1,7 @@
 ﻿using CellCultureBank.BLL.Models.BankSecond;
 using CellCultureBank.DAL.Models;
 
-namespace CellCultureBank.BLL.Profile;
+namespace CellCultureBank.BLL;
 /// <summary>
 /// Настройка профиля automapper банка
 /// </summary>

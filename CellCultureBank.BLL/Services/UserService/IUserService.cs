@@ -1,6 +1,6 @@
 ﻿using CellCultureBank.DAL.Models;
 
-namespace CellCultureBank.BLL.Profile.Services.UserService;
+namespace CellCultureBank.BLL.Services.UserService;
 
 public interface IUserService
 {

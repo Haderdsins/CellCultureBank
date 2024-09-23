@@ -18,6 +18,4 @@ public class CreateItemOfBank
     public bool Certification { get; set; }
     public string Address { get; set; } = null!;
     public int? Quantity { get; set; }
-    
-    public List<SelectListItem> Users { get; set; } = new List<SelectListItem>();
 }

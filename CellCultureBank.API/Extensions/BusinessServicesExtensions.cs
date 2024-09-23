@@ -1,7 +1,7 @@
-﻿using CellCultureBank.BLL.Profile;
-using CellCultureBank.BLL.Profile.Services.UserService;
-using CellCultureBank.BLL.Services.BankSecondCSV;
-using CellCultureBank.BLL.Services.BankSecondEntity;
+﻿using CellCultureBank.BLL;
+using CellCultureBank.BLL.Services.BankCSV;
+using CellCultureBank.BLL.Services.BankEntity;
+using CellCultureBank.BLL.Services.UserService;
 
 namespace CellCultureBank.API.Extensions;
 
@@ -14,8 +14,8 @@ public static class BusinessServicesExtensions
     public static void AddBusinessServices(this IServiceCollection services)
     {
         services.AddAutoMapper(typeof(BankProfile));
-        services.AddScoped<IBankSecondEntityService, BankSecondEntityService>();
-        services.AddScoped<IBankSecondCsvService, BankSecondCsvService>();
+        services.AddScoped<IBankEntityService, BankEntityService>();
+        services.AddScoped<IBankCsvService, BankCsvService>();
         services.AddScoped<IUserService, UserService>();
 
     }

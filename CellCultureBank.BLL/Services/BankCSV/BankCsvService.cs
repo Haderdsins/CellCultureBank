@@ -6,13 +6,13 @@ using CellCultureBank.DAL.Models;
 using CsvHelper;
 using CsvHelper.Configuration;
 
-namespace CellCultureBank.BLL.Services.BankSecondCSV;
+namespace CellCultureBank.BLL.Services.BankCSV;
 
-public class BankSecondCsvService : IBankSecondCsvService
+public class BankCsvService : IBankCsvService
 {
     private readonly BankDbContext _dbSecondContext;
 
-    public BankSecondCsvService(BankDbContext dbSecondContext)
+    public BankCsvService(BankDbContext dbSecondContext)
     {
         _dbSecondContext = dbSecondContext;
     }

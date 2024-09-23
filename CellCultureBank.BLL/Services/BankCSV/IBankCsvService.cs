@@ -1,6 +1,6 @@
-﻿namespace CellCultureBank.BLL.Services.BankSecondCSV;
+﻿namespace CellCultureBank.BLL.Services.BankCSV;
 
-public interface IBankSecondCsvService
+public interface IBankCsvService
 {
     /// <summary>
     /// Экспорт данных в CSV

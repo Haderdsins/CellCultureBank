@@ -1,21 +1,21 @@
 ﻿using CellCultureBank.BLL.Models.BankSecond;
-using CellCultureBank.BLL.Services.BankSecondCSV;
-using CellCultureBank.BLL.Services.BankSecondEntity;
+using CellCultureBank.BLL.Services.BankCSV;
+using CellCultureBank.BLL.Services.BankEntity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CellCultureBank.API.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class BankSecondController : ControllerBase
+public class BankController : ControllerBase
 {
-    private readonly IBankSecondEntityService _bankSecondEntityService;
-    private readonly IBankSecondCsvService _bankSecondCsvService;
+    private readonly IBankEntityService _bankEntityService;
+    private readonly IBankCsvService _bankCsvService;
 
-    public BankSecondController(IBankSecondEntityService bankSecondEntityService, IBankSecondCsvService bankSecondCsvService)
+    public BankController(IBankEntityService bankEntityService, IBankCsvService bankCsvService)
     {
-        _bankSecondEntityService = bankSecondEntityService;
-        _bankSecondCsvService = bankSecondCsvService;
+        _bankEntityService = bankEntityService;
+        _bankCsvService = bankCsvService;
     }
 
     /// <summary>
@@ -25,8 +25,8 @@ public class BankSecondController : ControllerBase
     [HttpPost("CreateItemOfSecondBank")]
     public async Task<IActionResult> CreateItemOfSecondBank(CreateItemOfBank createItemOfBank)
     {
-        await _bankSecondEntityService.Create(createItemOfBank);
-        return Ok();
+        await _bankEntityService.Create(createItemOfBank);
+        return Ok("Клетка успешно создана");
     }
     
     /// <summary>
@@ -36,17 +36,7 @@ public class BankSecondController : ControllerBase
     [HttpDelete("CreateItemOfSecondBank")]
     public async Task<IActionResult> DeleteItemOfSecondBank(int id)
     {
-        await _bankSecondEntityService.Delete(id);
-        return Ok();
-    }
-    
-    /// <summary>
-    /// Удалить все клетки
-    /// </summary>
-    [HttpDelete("DeleteAllItemOfBank")]
-    public async Task<IActionResult> DeleteAllItemOfBank()
-    {
-        await _bankSecondEntityService.DeleteAll();
+        await _bankEntityService.Delete(id);
         return Ok();
     }
 
@@ -57,7 +47,7 @@ public class BankSecondController : ControllerBase
     [HttpGet("GetItemOfBank")]
     public async Task<IActionResult> GetItemOfBank(int BankId)
     {
-        var itemOfBank = await _bankSecondEntityService.Get(BankId);
+        var itemOfBank = await _bankEntityService.Get(BankId);
         return Ok(itemOfBank);
     }
 
@@ -67,7 +57,7 @@ public class BankSecondController : ControllerBase
     [HttpGet("GetAllItemOfBank")]
     public async Task<IActionResult> GetAllItemOfBank()
     {
-        var allItems = await _bankSecondEntityService.GetAll();
+        var allItems = await _bankEntityService.GetAll();
         return Ok(allItems);
     }
 
@@ -77,7 +67,7 @@ public class BankSecondController : ControllerBase
     [HttpGet("GetSortedDescendingItemsOfBank")]
     public async Task<IActionResult> GetSortedDescendingItemsOfBank()
     {
-        var allSortDesItems = await _bankSecondEntityService.GetSortedDescendingItemsOfBank();
+        var allSortDesItems = await _bankEntityService.GetSortedDescendingItemsOfBank();
         return Ok(allSortDesItems);
     }
     
@@ -87,7 +77,7 @@ public class BankSecondController : ControllerBase
     [HttpGet("GetSortedItemsOfBank")]
     public async Task<IActionResult> GetSortedItemsOfBank()
     {
-        var allSortItems = await _bankSecondEntityService.GetSortedItemsOfBank();
+        var allSortItems = await _bankEntityService.GetSortedItemsOfBank();
         return Ok(allSortItems);
     }
 
@@ -97,7 +87,7 @@ public class BankSecondController : ControllerBase
     [HttpGet("GetCountOfItems")]
     public async Task<int> GetCountOfItems()
     {
-        return await _bankSecondEntityService.GetCountOfAllItems();
+        return await _bankEntityService.GetCountOfAllItems();
     }
 
     /// <summary>
@@ -108,7 +98,7 @@ public class BankSecondController : ControllerBase
     [HttpPut("UpdateItemOfBank")]
     public async Task<IActionResult> UpdateItemOfBank(int BankId, UpdateItemOfBank updateItemOfBankModel)
     {
-        await _bankSecondEntityService.Update(BankId, updateItemOfBankModel);
+        await _bankEntityService.Update(BankId, updateItemOfBankModel);
         return Ok();
     }
 
@@ -121,7 +111,7 @@ public class BankSecondController : ControllerBase
     [HttpGet("GetItemsOnDateOfDefrosting")]
     public async Task<IActionResult> GetItemsOnDate(int year, int month, int day)
     {
-        var result = await _bankSecondEntityService.GetAllOnDateOfDefrosting(year, month, day);
+        var result = await _bankEntityService.GetAllOnDateOfDefrosting(year, month, day);
         return Ok(result);
     }
 
@@ -138,7 +128,7 @@ public class BankSecondController : ControllerBase
     public async Task<IActionResult> GetItemsOnDateRangeOfDefrosting(
         int yearStart, int monthStart, int dayStart, int yearEnd, int monthEnd, int dayEnd)
     {
-        var result = await _bankSecondEntityService.GetAllOnDateRangeOfDefrosting(
+        var result = await _bankEntityService.GetAllOnDateRangeOfDefrosting(
             yearStart, monthStart, dayStart, yearEnd, monthEnd, dayEnd);
         return Ok(result);
     }
@@ -149,7 +139,7 @@ public class BankSecondController : ControllerBase
     [HttpGet("ExportToCsv")]
     public async Task<IActionResult> ExportToCsv()
     {
-        var csvStream = await _bankSecondCsvService.ExportToCsvAsync();
+        var csvStream = await _bankCsvService.ExportToCsvAsync();
         if (csvStream == null)
         {
             return NotFound("Нет данных для экспорта.");
@@ -171,7 +161,7 @@ public class BankSecondController : ControllerBase
 
         using (var stream = file.OpenReadStream())
         {
-            await _bankSecondCsvService.ImportFromCsvAsync(stream);
+            await _bankCsvService.ImportFromCsvAsync(stream);
         }
 
         return Ok("Данные успешно импортированы");

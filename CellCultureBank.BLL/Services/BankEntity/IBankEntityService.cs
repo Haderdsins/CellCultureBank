@@ -1,11 +1,9 @@
 ﻿using CellCultureBank.BLL.Models.BankSecond;
 using CellCultureBank.DAL.Models;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
-namespace CellCultureBank.BLL.Services.BankSecondEntity;
+namespace CellCultureBank.BLL.Services.BankEntity;
 
-public interface IBankSecondEntityService
+public interface IBankEntityService
 {
     /// <summary>
     /// Создание клетки
@@ -17,16 +15,16 @@ public interface IBankSecondEntityService
     /// <summary>
     /// Удалить клетку
     /// </summary>
-    /// <param name="BankId">Id клетки</param>
+    /// <param name="bankId">Id клетки</param>
     /// <returns></returns>
-    Task Delete(int BankId);
+    Task Delete(int bankId);
 
     /// <summary>
     /// Получить клетку
     /// </summary>
-    /// <param name="BankId">Id клетки</param>
+    /// <param name="bankId">Id клетки</param>
     /// <returns></returns>
-    Task<BankOfCell> Get(int BankId);
+    Task<BankOfCell> Get(int bankId);
 
     /// <summary>
     /// Получить все клетки
@@ -37,17 +35,11 @@ public interface IBankSecondEntityService
     /// <summary>
     /// Обновить данные о клетке
     /// </summary>
-    /// <param name="BankId">Id клетки</param>
+    /// <param name="bankId">Id клетки</param>
     /// <param name="model">Модель обновления клетки</param>
     /// <returns></returns>
-    Task Update(int BankId, UpdateItemOfBank model);
-
-    /// <summary>
-    /// Удалить все клетки
-    /// </summary>
-    /// <returns></returns>
-    Task DeleteAll();
-
+    Task Update(int bankId, UpdateItemOfBank model);
+    
     /// <summary>
     /// Получить все клетки в отсортированном порядке по убыванию
     /// </summary>

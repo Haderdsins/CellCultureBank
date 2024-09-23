@@ -24,13 +24,13 @@ public interface IBankEntityService
     /// </summary>
     /// <param name="bankId">Id клетки</param>
     /// <returns></returns>
-    Task<BankOfCell> Get(int bankId);
+    Task<GetModel> Get(int bankId);
 
     /// <summary>
     /// Получить все клетки
     /// </summary>
     /// <returns></returns>
-    Task<IEnumerable<BankOfCell>> GetAll();
+    Task<IEnumerable<GetModel>> GetAll();
 
     /// <summary>
     /// Обновить данные о клетке
@@ -44,13 +44,13 @@ public interface IBankEntityService
     /// Получить все клетки в отсортированном порядке по убыванию
     /// </summary>
     /// <returns></returns>
-    Task<IEnumerable<BankOfCell>> GetSortedDescendingItemsOfBank();
+    Task<IEnumerable<GetModel>> GetSortedDescendingItemsOfBank();
 
     /// <summary>
     /// Получить все клетки в отсортированном порядке по возрастанию
     /// </summary>
     /// <returns></returns>
-    Task<IEnumerable<BankOfCell>> GetSortedItemsOfBank();
+    Task<IEnumerable<GetModel>> GetSortedItemsOfBank();
 
     /// <summary>
     /// Получить все клетки по дате разморозки
@@ -59,7 +59,7 @@ public interface IBankEntityService
     /// <param name="month">Месяц</param>
     /// <param name="day">День</param>
     /// <returns></returns>
-    Task<IEnumerable<BankOfCell>> GetAllOnDateOfDefrosting(int year, int month, int day);
+    Task<IEnumerable<GetModel>> GetAllOnDateOfDefrosting(int year, int month, int day);
 
     /// <summary>
     /// Получить все клетки в диапазоне дат разморозки
@@ -71,7 +71,7 @@ public interface IBankEntityService
     /// <param name="monthEnd">Конечный месяц</param>
     /// <param name="dayEnd">Конечный день</param>
     /// <returns></returns>
-    Task<IEnumerable<BankOfCell>> GetAllOnDateRangeOfDefrosting(int yearStart, int monthStart, int dayStart, int yearEnd, int monthEnd, int dayEnd);
+    Task<IEnumerable<GetModel>> GetAllOnDateRangeOfDefrosting(int yearStart, int monthStart, int dayStart, int yearEnd, int monthEnd, int dayEnd);
     
     /// <summary>
     /// Получить все клетки в диапазоне дат заморозки
@@ -83,7 +83,7 @@ public interface IBankEntityService
     /// <param name="monthEnd">Конечный месяц</param>
     /// <param name="dayEnd">Конечный день</param>
     /// <returns></returns>
-    Task<IEnumerable<BankOfCell>> GetAllOnDateRangeOfFrosting(int yearStart, int monthStart, int dayStart, int yearEnd, int monthEnd, int dayEnd);
+    Task<IEnumerable<GetModel>> GetAllOnDateRangeOfFrosting(int yearStart, int monthStart, int dayStart, int yearEnd, int monthEnd, int dayEnd);
     
     /// <summary>
     /// Получить количество клеток

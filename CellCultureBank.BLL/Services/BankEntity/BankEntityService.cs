@@ -21,25 +21,6 @@ public class BankEntityService : IBankEntityService
 
     public async Task Create(CreateItemModel model)
     {
-        //Проверка есть ли такой пользователь заморозки
-        if (model.FrozenByUserId.HasValue)
-        {
-            var userExists = await _dbSecondContext.Users.AnyAsync(u => u.Id == model.FrozenByUserId.Value);
-            if (!userExists)
-            {
-                throw new ArgumentException($"Пользователь заморозки с ID {model.FrozenByUserId} не найден.");
-            }
-        }
-        //Проверка есть ли такой пользователь разморозки
-        if (model.DefrostedByUserId.HasValue)
-        {
-            var userExists = await _dbSecondContext.Users.AnyAsync(u => u.Id == model.DefrostedByUserId.Value);
-            if (!userExists)
-            {
-                throw new ArgumentException($"Пользователь разморозки с ID {model.DefrostedByUserId} не найден.");
-            }
-        }
-        
         var bankSecond = _secondBankMapper.Map<BankOfCell>(model);
         await _dbSecondContext.BankOfCells.AddAsync(bankSecond);
         await _dbSecondContext.SaveChangesAsync();
@@ -59,20 +40,23 @@ public class BankEntityService : IBankEntityService
         }
     }
 
-    public async Task<BankOfCell> Get(int bankId)
+    public async Task<GetModel> Get(int bankId)
     {
         var bankItemToGet = await _dbSecondContext.BankOfCells.FindAsync(bankId);
         if (bankItemToGet != null)
         {
-            return bankItemToGet;
+            return _secondBankMapper.Map<GetModel>(bankItemToGet);
         }
         throw new ArgumentException("Клетки с таким id не найдено");
     }
 
-    public async Task<IEnumerable<BankOfCell>> GetAll()
+
+    public async Task<IEnumerable<GetModel>> GetAll()
     {
-        return await _dbSecondContext.BankOfCells.ToListAsync();
+        var bankOfCells = await _dbSecondContext.BankOfCells.ToListAsync();
+        return _secondBankMapper.Map<IEnumerable<GetModel>>(bankOfCells);
     }
+
 
     public async Task Update(int bankId, UpdateItemModel model)
     {
@@ -88,43 +72,58 @@ public class BankEntityService : IBankEntityService
         }
     }
     
-    public async Task<IEnumerable<BankOfCell>> GetSortedDescendingItemsOfBank()
+    public async Task<IEnumerable<GetModel>> GetSortedDescendingItemsOfBank()
     {
-        return await _dbSecondContext.BankOfCells.OrderByDescending(p => p.DateOfDefrosting).ToListAsync();
+        var sortedCells = await _dbSecondContext.BankOfCells
+            .OrderByDescending(p => p.DateOfDefrosting)
+            .ToListAsync();
+    
+        return _secondBankMapper.Map<IEnumerable<GetModel>>(sortedCells);
     }
 
-    public async Task<IEnumerable<BankOfCell>> GetSortedItemsOfBank()
+    public async Task<IEnumerable<GetModel>> GetSortedItemsOfBank()
     {
-        return await _dbSecondContext.BankOfCells.OrderBy(p => p.DateOfDefrosting).ToListAsync();
+        var sortedCells = await _dbSecondContext.BankOfCells
+            .OrderBy(p => p.DateOfDefrosting)
+            .ToListAsync();
+
+        return _secondBankMapper.Map<IEnumerable<GetModel>>(sortedCells);
     }
 
-    public async Task<IEnumerable<BankOfCell>> GetAllOnDateOfDefrosting(int year, int month, int day)
+    public async Task<IEnumerable<GetModel>> GetAllOnDateOfDefrosting(int year, int month, int day)
     {
-        return await _dbSecondContext.BankOfCells
+        var bankOfCells = await _dbSecondContext.BankOfCells
             .Where(p => p.DateOfDefrosting.HasValue && 
                         p.DateOfDefrosting.Value.Year == year &&
                         p.DateOfDefrosting.Value.Month == month &&
                         p.DateOfDefrosting.Value.Day == day)
             .ToListAsync();
+    
+        return _secondBankMapper.Map<IEnumerable<GetModel>>(bankOfCells);
     }
 
-    public async Task<IEnumerable<BankOfCell>> GetAllOnDateRangeOfDefrosting(int yearStart, int monthStart, int dayStart, int yearEnd, int monthEnd, int dayEnd)
+    public async Task<IEnumerable<GetModel>> GetAllOnDateRangeOfDefrosting(int yearStart, int monthStart, int dayStart, int yearEnd, int monthEnd, int dayEnd)
     {
-        return await _dbSecondContext.BankOfCells
+        var bankOfCells = await _dbSecondContext.BankOfCells
             .Where(cell => cell.DateOfDefrosting.HasValue &&
                            cell.DateOfDefrosting.Value >= new DateTime(yearStart, monthStart, dayStart) &&
                            cell.DateOfDefrosting.Value <= new DateTime(yearEnd, monthEnd, dayEnd))
             .ToListAsync();
+
+        return _secondBankMapper.Map<IEnumerable<GetModel>>(bankOfCells);
     }
 
-    public async Task<IEnumerable<BankOfCell>> GetAllOnDateRangeOfFrosting(int yearStart, int monthStart, int dayStart, int yearEnd, int monthEnd, int dayEnd)
+    public async Task<IEnumerable<GetModel>> GetAllOnDateRangeOfFrosting(int yearStart, int monthStart, int dayStart, int yearEnd, int monthEnd, int dayEnd)
     {
-        return await _dbSecondContext.BankOfCells
+        var bankOfCells = await _dbSecondContext.BankOfCells
             .Where(cell => cell.DateOfFreezing.HasValue &&
                            cell.DateOfFreezing.Value >= new DateTime(yearStart, monthStart, dayStart) &&
                            cell.DateOfFreezing.Value <= new DateTime(yearEnd, monthEnd, dayEnd))
             .ToListAsync();
+
+        return _secondBankMapper.Map<IEnumerable<GetModel>>(bankOfCells);
     }
+
 
     public async Task<int> GetCountOfAllItems()
     {

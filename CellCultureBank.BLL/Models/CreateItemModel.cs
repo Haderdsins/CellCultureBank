@@ -15,26 +15,6 @@ public class CreateItemModel
     public string Origin { get; set; } = null!;
     
     /// <summary>
-    /// Дата заморозки
-    /// </summary>
-    public DateTime? DateOfFreezing { get; set; }
-    
-    /// <summary>
-    /// Id пользователя кто заморозил
-    /// </summary>
-    public int? FrozenByUserId { get; set; }
-    
-    /// <summary>
-    /// Дата разморозки
-    /// </summary>
-    public DateTime? DateOfDefrosting { get; set; }
-    
-    /// <summary>
-    /// Id пользователя кто разморозил
-    /// </summary>
-    public int? DefrostedByUserId { get; set; }
-    
-    /// <summary>
     /// Отчистка
     /// </summary>
     public bool Clearing { get; set; }

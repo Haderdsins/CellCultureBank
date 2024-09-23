@@ -1,8 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿namespace CellCultureBank.BLL.Models;
 
-namespace CellCultureBank.DAL.Models;
-
-public class BankOfCell : Entity<int>
+public class GetModel
 {
     /// <summary>
     /// Клеточная линия
@@ -25,12 +23,6 @@ public class BankOfCell : Entity<int>
     public int? DefrostedByUserId { get; set; }
     
     /// <summary>
-    /// Модель кем разморожена
-    /// </summary>
-    [JsonIgnore]
-    public User? DefrostedByUser { get; set; }
-    
-    /// <summary>
     /// Дата заморозки
     /// </summary>
     public DateTime? DateOfFreezing{ get; set; }
@@ -39,12 +31,6 @@ public class BankOfCell : Entity<int>
     /// Id кем заморожена
     /// </summary>
     public int? FrozenByUserId { get; set; }
-    
-    /// <summary>
-    /// Модель кем заморожена
-    /// </summary>
-    [JsonIgnore]
-    public User? FrozenByUser { get; set; }
     
     /// <summary>
     /// Отчистка
@@ -65,5 +51,5 @@ public class BankOfCell : Entity<int>
     /// Количество
     /// </summary>
     public int? Quantity{ get; set; }
-    
+
 }

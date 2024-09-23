@@ -13,5 +13,6 @@ public class BankProfile : AutoMapper.Profile
         CreateMap<UpdateItemModel, BankOfCell>();
         CreateMap<FreezeCellModel, BankOfCell>();
         CreateMap<DefrostCellModel, BankOfCell>();
+        CreateMap<BankOfCell, GetModel>();
     }
 }

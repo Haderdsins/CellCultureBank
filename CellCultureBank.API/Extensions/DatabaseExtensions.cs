@@ -1,4 +1,4 @@
-﻿using CellCultureBank.DAL.Database;
+﻿using CellCultureBank.DAL;
 using Microsoft.EntityFrameworkCore;
 
 namespace CellCultureBank.API.Extensions;

@@ -1,6 +1,5 @@
 ﻿using CellCultureBank.BLL.Profile;
-using CellCultureBank.BLL.Services.BankFirstCSV;
-using CellCultureBank.BLL.Services.BankFirstEntity;
+using CellCultureBank.BLL.Profile.Services.UserService;
 using CellCultureBank.BLL.Services.BankSecondCSV;
 using CellCultureBank.BLL.Services.BankSecondEntity;
 
@@ -14,10 +13,10 @@ public static class BusinessServicesExtensions
     /// <param name="services"></param>
     public static void AddBusinessServices(this IServiceCollection services)
     {
-        services.AddAutoMapper(typeof(BankFirstProfile), typeof(BankSecondProfile));
+        services.AddAutoMapper(typeof(BankProfile));
         services.AddScoped<IBankSecondEntityService, BankSecondEntityService>();
         services.AddScoped<IBankSecondCsvService, BankSecondCsvService>();
-        services.AddScoped<IBankFirstEntityService, BankFirstEntityService>();
-        services.AddScoped<IBankFirstCsvService, BankFirstCsvService>();
+        services.AddScoped<IUserService, UserService>();
+
     }
 }

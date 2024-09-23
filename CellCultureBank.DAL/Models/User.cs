@@ -1,9 +1,9 @@
-﻿namespace CellCultureBank.DAL.Models;
+﻿using Newtonsoft.Json;
+
+namespace CellCultureBank.DAL.Models;
 
 public class User : Entity<int>
 {
-    
-    
     /// <summary>
     /// Логин
     /// </summary>
@@ -18,11 +18,25 @@ public class User : Entity<int>
     /// ФИО пользователя
     /// </summary>
     public string FullName { get; set; }
-
+    
+    /// <summary>
+    /// Список клеточных линий, замороженных этим пользователем
+    /// </summary>
+    [JsonIgnore]
+    public ICollection<BankOfCell> FrozenBankSeconds { get; set; } = new List<BankOfCell>();
+    
+    /// <summary>
+    /// Список клеточных линий, размороженных этим пользователем
+    /// </summary>
+    [JsonIgnore]
+    public ICollection<BankOfCell> DefrostedBankSeconds { get; set; } = new List<BankOfCell>();
+    
+    
     public User(string login, string passwordHash, string fullName)
     {
         Login = login;
         PasswordHash = passwordHash;
         FullName = fullName;
+        
     }
 }

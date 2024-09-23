@@ -21,11 +21,11 @@ public class BankSecondController : ControllerBase
     /// <summary>
     /// Создать клетку
     /// </summary>
-    /// <param name="createItemOfSecondBank"></param>
+    /// <param name="createItemOfBank"></param>
     [HttpPost("CreateItemOfSecondBank")]
-    public async Task<IActionResult> CreateItemOfSecondBank(CreateItemOfSecondBank createItemOfSecondBank)
+    public async Task<IActionResult> CreateItemOfSecondBank(CreateItemOfBank createItemOfBank)
     {
-        await _bankSecondEntityService.Create(createItemOfSecondBank);
+        await _bankSecondEntityService.Create(createItemOfBank);
         return Ok();
     }
     
@@ -106,7 +106,7 @@ public class BankSecondController : ControllerBase
     /// <param name="BankId">Идентификатор клетки</param>
     /// <param name="updateItemOfBankModel"></param>
     [HttpPut("UpdateItemOfBank")]
-    public async Task<IActionResult> UpdateItemOfBank(int BankId, UpdateItemOfSecondBank updateItemOfBankModel)
+    public async Task<IActionResult> UpdateItemOfBank(int BankId, UpdateItemOfBank updateItemOfBankModel)
     {
         await _bankSecondEntityService.Update(BankId, updateItemOfBankModel);
         return Ok();

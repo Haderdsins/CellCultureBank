@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
 using System.Text;
 using CellCultureBank.BLL.Models.BankSecond;
-using CellCultureBank.DAL.Database;
+using CellCultureBank.DAL;
 using CellCultureBank.DAL.Models;
 using CsvHelper;
 using CsvHelper.Configuration;
@@ -18,15 +18,15 @@ public class BankSecondCsvService : IBankSecondCsvService
     }
     public async Task<Stream> ExportToCsvAsync()
     {
-        var items = _dbSecondContext.BankSeconds
-            .Select(bf => new BankSecondCsvRecord
+        var items = _dbSecondContext.BankOfCells
+            .Select(bf => new BankCsvRecord
             {
                 CellLine = bf.CellLine,
                 Origin = bf.Origin,
                 DateOfFreezing = bf.DateOfFreezing,
-                FrozenByFullName = bf.FrozenByFullName,
+                FrozenByUserId = bf.FrozenByUserId,
                 DateOfDefrosting = bf.DateOfDefrosting,
-                DefrostedByFullName = bf.DefrostedByFullName,
+                DefrostedByUserId = bf.DefrostedByUserId,
                 Clearing = bf.Clearing,
                 Certification = bf.Certification,
                 Quantity = bf.Quantity,
@@ -68,18 +68,18 @@ public class BankSecondCsvService : IBankSecondCsvService
         using (var csv = new CsvReader(reader, csvConfig))
         {
             // Считывание данных из CSV в BankSecondCsvRecord
-            var records = csv.GetRecords<BankSecondCsvRecord>().ToList();
+            var records = csv.GetRecords<BankCsvRecord>().ToList();
 
             // Преобразование записей в модели для БД, исключая ID
-            var bankSeconds = records.Select(record => new BankSecond()
+            var bankSeconds = records.Select(record => new BankOfCell()
             {
                 // Не задаем поле ID, чтобы база данных его сгенерировала
                 CellLine = record.CellLine ?? null,
                 Origin = record.Origin ?? null,
                 DateOfFreezing = record.DateOfFreezing ?? null,
-                FrozenByFullName = record.FrozenByFullName ?? null,
+                FrozenByUserId = record.FrozenByUserId ?? null,
                 DateOfDefrosting = record.DateOfDefrosting ?? null,
-                DefrostedByFullName = record.DefrostedByFullName ?? null,
+                DefrostedByUserId = record.DefrostedByUserId ?? null,
                 Clearing = record.Clearing,
                 Certification = record.Certification,
                 Quantity = record.Quantity ?? 0,
@@ -87,7 +87,7 @@ public class BankSecondCsvService : IBankSecondCsvService
             }).ToList();
 
             // Добавление данных в базу
-            _dbSecondContext.BankSeconds.AddRange(bankSeconds);
+            _dbSecondContext.BankOfCells.AddRange(bankSeconds);
             await _dbSecondContext.SaveChangesAsync();
         }
     }

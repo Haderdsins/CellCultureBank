@@ -12,7 +12,7 @@ public interface IBankSecondEntityService
     /// </summary>
     /// <param name="model"></param>
     /// <returns></returns>
-    Task Create(CreateItemOfSecondBank model);
+    Task Create(CreateItemOfBank model);
 
     /// <summary>
     /// Удалить клетку
@@ -26,13 +26,13 @@ public interface IBankSecondEntityService
     /// </summary>
     /// <param name="BankId">Id клетки</param>
     /// <returns></returns>
-    Task<BankSecond> Get(int BankId);
+    Task<BankOfCell> Get(int BankId);
 
     /// <summary>
     /// Получить все клетки
     /// </summary>
     /// <returns></returns>
-    Task<IEnumerable<BankSecond>> GetAll();
+    Task<IEnumerable<BankOfCell>> GetAll();
 
     /// <summary>
     /// Обновить данные о клетке
@@ -40,7 +40,7 @@ public interface IBankSecondEntityService
     /// <param name="BankId">Id клетки</param>
     /// <param name="model">Модель обновления клетки</param>
     /// <returns></returns>
-    Task Update(int BankId, UpdateItemOfSecondBank model);
+    Task Update(int BankId, UpdateItemOfBank model);
 
     /// <summary>
     /// Удалить все клетки
@@ -52,13 +52,13 @@ public interface IBankSecondEntityService
     /// Получить все клетки в отсортированном порядке по убыванию
     /// </summary>
     /// <returns></returns>
-    Task<IEnumerable<BankSecond>> GetSortedDescendingItemsOfBank();
+    Task<IEnumerable<BankOfCell>> GetSortedDescendingItemsOfBank();
 
     /// <summary>
     /// Получить все клетки в отсортированном порядке по возрастанию
     /// </summary>
     /// <returns></returns>
-    Task<IEnumerable<BankSecond>> GetSortedItemsOfBank();
+    Task<IEnumerable<BankOfCell>> GetSortedItemsOfBank();
 
     /// <summary>
     /// Получить все клетки по дате разморозки
@@ -67,7 +67,7 @@ public interface IBankSecondEntityService
     /// <param name="month">Месяц</param>
     /// <param name="day">День</param>
     /// <returns></returns>
-    Task<IEnumerable<BankSecond>> GetAllOnDateOfDefrosting(int year, int month, int day);
+    Task<IEnumerable<BankOfCell>> GetAllOnDateOfDefrosting(int year, int month, int day);
 
     /// <summary>
     /// Получить все клетки в диапазоне дат разморозки
@@ -79,7 +79,7 @@ public interface IBankSecondEntityService
     /// <param name="monthEnd">Конечный месяц</param>
     /// <param name="dayEnd">Конечный день</param>
     /// <returns></returns>
-    Task<IEnumerable<BankSecond>> GetAllOnDateRangeOfDefrosting(int yearStart, int monthStart, int dayStart, int yearEnd, int monthEnd, int dayEnd);
+    Task<IEnumerable<BankOfCell>> GetAllOnDateRangeOfDefrosting(int yearStart, int monthStart, int dayStart, int yearEnd, int monthEnd, int dayEnd);
 
     /// <summary>
     /// Получить количество клеток

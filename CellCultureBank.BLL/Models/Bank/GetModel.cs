@@ -3,6 +3,11 @@
 public class GetModel
 {
     /// <summary>
+    /// Идентификатор клетки
+    /// </summary>
+    public int Id { get; set; }
+
+    /// <summary>
     /// Клеточная линия
     /// </summary>
     public string CellLine { get; set; } = null!;

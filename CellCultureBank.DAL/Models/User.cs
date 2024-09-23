@@ -31,7 +31,10 @@ public class User : Entity<int>
     [JsonIgnore]
     public ICollection<BankOfCell> DefrostedBankSeconds { get; set; } = new List<BankOfCell>();
     
-    
+    /// <summary>
+    /// Конструктор по умолчанию
+    /// </summary>
+    public User() { }
     public User(string login, string passwordHash, string fullName)
     {
         Login = login;

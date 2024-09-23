@@ -1,4 +1,5 @@
 ﻿using CellCultureBank.BLL.Models;
+using CellCultureBank.BLL.Models.User;
 using CellCultureBank.DAL.Models;
 
 namespace CellCultureBank.BLL;
@@ -14,5 +15,6 @@ public class BankProfile : AutoMapper.Profile
         CreateMap<FreezeCellModel, BankOfCell>();
         CreateMap<DefrostCellModel, BankOfCell>();
         CreateMap<BankOfCell, GetModel>();
+        CreateMap<CreateUserModel, User>();
     }
 }

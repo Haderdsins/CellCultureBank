@@ -1,4 +1,4 @@
-﻿using CellCultureBank.BLL.Models.BankSecond;
+﻿using CellCultureBank.BLL.Models;
 using CellCultureBank.DAL.Models;
 
 namespace CellCultureBank.BLL;
@@ -9,8 +9,9 @@ public class BankProfile : AutoMapper.Profile
 {
     public BankProfile()
     {
-        CreateMap<CreateItemOfBank, BankOfCell>();
-        CreateMap<UpdateItemOfBank, BankOfCell>();
-        CreateMap<UpdateCellModel, BankOfCell>();
+        CreateMap<CreateItemModel, BankOfCell>();
+        CreateMap<UpdateItemModel, BankOfCell>();
+        CreateMap<FreezeCellModel, BankOfCell>();
+        CreateMap<DefrostCellModel, BankOfCell>();
     }
 }

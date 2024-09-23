@@ -1,4 +1,4 @@
-﻿using CellCultureBank.BLL.Models.BankSecond;
+﻿using CellCultureBank.BLL.Models;
 using CellCultureBank.BLL.Services.BankCSV;
 using CellCultureBank.BLL.Services.BankEntity;
 using Microsoft.AspNetCore.Mvc;
@@ -21,11 +21,11 @@ public class BankController : ControllerBase
     /// <summary>
     /// Создать клетку
     /// </summary>
-    /// <param name="createItemOfBank"></param>
+    /// <param name="createItemModel"></param>
     [HttpPost("CreateItemOfSecondBank")]
-    public async Task<IActionResult> CreateItemOfSecondBank(CreateItemOfBank createItemOfBank)
+    public async Task<IActionResult> CreateItemOfSecondBank(CreateItemModel createItemModel)
     {
-        await _bankEntityService.Create(createItemOfBank);
+        await _bankEntityService.Create(createItemModel);
         return Ok("Клетка успешно создана");
     }
     
@@ -94,11 +94,11 @@ public class BankController : ControllerBase
     /// Обновить данные о клетке
     /// </summary>
     /// <param name="BankId">Идентификатор клетки</param>
-    /// <param name="updateItemOfBankModel"></param>
+    /// <param name="updateItemModelModel"></param>
     [HttpPut("UpdateItemOfBank")]
-    public async Task<IActionResult> UpdateItemOfBank(int BankId, UpdateItemOfBank updateItemOfBankModel)
+    public async Task<IActionResult> UpdateItemOfBank(int BankId, UpdateItemModel updateItemModelModel)
     {
-        await _bankEntityService.Update(BankId, updateItemOfBankModel);
+        await _bankEntityService.Update(BankId, updateItemModelModel);
         return Ok();
     }
 
@@ -124,11 +124,57 @@ public class BankController : ControllerBase
     /// <param name="yearEnd">Конечный год</param>
     /// <param name="monthEnd">Конечный месяц</param>
     /// <param name="dayEnd">Конечный день</param>
-    [HttpGet("GetItemsOnDateRangeOfDefrosting")]
-    public async Task<IActionResult> GetItemsOnDateRangeOfDefrosting(
+    [HttpGet("GetAllOnDateRangeOfDefrosting")]
+    public async Task<IActionResult> GetAllOnDateRangeOfDefrosting(
         int yearStart, int monthStart, int dayStart, int yearEnd, int monthEnd, int dayEnd)
     {
         var result = await _bankEntityService.GetAllOnDateRangeOfDefrosting(
+            yearStart, monthStart, dayStart, yearEnd, monthEnd, dayEnd);
+        return Ok(result);
+    }
+    
+    /// <summary>
+    /// Заморозить клетку
+    /// </summary>
+    /// <param name="bankId">Идентификатор клетки</param>
+    /// <param name="freezeCellModel"></param>
+    /// <returns></returns>
+    [HttpPut("FreezeCell")]
+    public async Task<IActionResult> FreezeCell(int bankId, FreezeCellModel freezeCellModel)
+    {
+        await _bankEntityService.FreezeCell(bankId, freezeCellModel);
+        return Ok($"Клетка {bankId} успешно заморожена!");
+    }
+
+    /// <summary>
+    /// Разморозить клетку
+    /// </summary>
+    /// <param name="bankId">Идентификатор клетки</param>
+    /// <param name="defrostCellModel"></param>
+    /// <returns></returns>
+    [HttpPut("DefrostCell")]
+    public async Task<IActionResult> DefrostCell(int bankId, DefrostCellModel defrostCellModel)
+    {
+        await _bankEntityService.DefrostCell(bankId, defrostCellModel);
+        return Ok($"Клетка {bankId} успешно разморожена");
+
+    }
+
+    /// <summary>
+    /// Получить клетки в диапазоне дат заморозки
+    /// </summary>
+    /// <param name="yearStart">Начальный год</param>
+    /// <param name="monthStart">Начальный месяц</param>
+    /// <param name="dayStart">Начальный день</param>
+    /// <param name="yearEnd">Конечный год</param>
+    /// <param name="monthEnd">Конечный месяц</param>
+    /// <param name="dayEnd">Конечный день</param>
+    /// <returns></returns>
+    [HttpGet("GetAllOnDateRangeOfFrosting")]
+    public async Task<IActionResult> GetAllOnDateRangeOfFrosting(
+        int yearStart, int monthStart, int dayStart, int yearEnd, int monthEnd, int dayEnd)
+    {
+        var result = await _bankEntityService.GetAllOnDateRangeOfFrosting(
             yearStart, monthStart, dayStart, yearEnd, monthEnd, dayEnd);
         return Ok(result);
     }

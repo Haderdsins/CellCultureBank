@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 using System.Text;
-using CellCultureBank.BLL.Models.BankSecond;
+using CellCultureBank.BLL.Models;
 using CellCultureBank.DAL;
 using CellCultureBank.DAL.Models;
 using CsvHelper;
@@ -19,7 +19,7 @@ public class BankCsvService : IBankCsvService
     public async Task<Stream> ExportToCsvAsync()
     {
         var items = _dbSecondContext.BankOfCells
-            .Select(bf => new BankCsvRecord
+            .Select(bf => new BankCsvRecordModel
             {
                 CellLine = bf.CellLine,
                 Origin = bf.Origin,
@@ -68,7 +68,7 @@ public class BankCsvService : IBankCsvService
         using (var csv = new CsvReader(reader, csvConfig))
         {
             // Считывание данных из CSV в BankSecondCsvRecord
-            var records = csv.GetRecords<BankCsvRecord>().ToList();
+            var records = csv.GetRecords<BankCsvRecordModel>().ToList();
 
             // Преобразование записей в модели для БД, исключая ID
             var bankSeconds = records.Select(record => new BankOfCell()

@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
-using CellCultureBank.BLL.Models.BankSecond;
+using CellCultureBank.BLL.Models;
 using CellCultureBank.DAL;
 using CellCultureBank.DAL.Models;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -18,7 +19,7 @@ public class BankEntityService : IBankEntityService
         _secondBankMapper = secondBankMapper;
     }
 
-    public async Task Create(CreateItemOfBank model)
+    public async Task Create(CreateItemModel model)
     {
         //Проверка есть ли такой пользователь заморозки
         if (model.FrozenByUserId.HasValue)
@@ -73,16 +74,18 @@ public class BankEntityService : IBankEntityService
         return await _dbSecondContext.BankOfCells.ToListAsync();
     }
 
-    public Task Update(int bankId, UpdateItemOfBank model)
+    public async Task Update(int bankId, UpdateItemModel model)
     {
-        var bankItemToUpdate = _dbSecondContext.BankOfCells.Find(bankId);
+        var bankItemToUpdate = await _dbSecondContext.BankOfCells.FindAsync(bankId);
         if (bankItemToUpdate != null)
         {
             _secondBankMapper.Map(model, bankItemToUpdate);
-            return _dbSecondContext.SaveChangesAsync();
+            await _dbSecondContext.SaveChangesAsync();
         }
-        throw new ArgumentException("Клетка с таким id не найдена");
-        
+        else
+        {
+            throw new ArgumentException($"Клетка с id {bankId} не найдена");
+        }
     }
     
     public async Task<IEnumerable<BankOfCell>> GetSortedDescendingItemsOfBank()
@@ -108,13 +111,18 @@ public class BankEntityService : IBankEntityService
     public async Task<IEnumerable<BankOfCell>> GetAllOnDateRangeOfDefrosting(int yearStart, int monthStart, int dayStart, int yearEnd, int monthEnd, int dayEnd)
     {
         return await _dbSecondContext.BankOfCells
-            .Where(p => p.DateOfDefrosting.HasValue &&
-                        p.DateOfDefrosting.Value.Year >= yearStart &&
-                        p.DateOfDefrosting.Value.Year <= yearEnd &&
-                        p.DateOfDefrosting.Value.Month >= monthStart &&
-                        p.DateOfDefrosting.Value.Month <= monthEnd &&
-                        p.DateOfDefrosting.Value.Day >= dayStart &&
-                        p.DateOfDefrosting.Value.Day <= dayEnd)
+            .Where(cell => cell.DateOfDefrosting.HasValue &&
+                           cell.DateOfDefrosting.Value >= new DateTime(yearStart, monthStart, dayStart) &&
+                           cell.DateOfDefrosting.Value <= new DateTime(yearEnd, monthEnd, dayEnd))
+            .ToListAsync();
+    }
+
+    public async Task<IEnumerable<BankOfCell>> GetAllOnDateRangeOfFrosting(int yearStart, int monthStart, int dayStart, int yearEnd, int monthEnd, int dayEnd)
+    {
+        return await _dbSecondContext.BankOfCells
+            .Where(cell => cell.DateOfFreezing.HasValue &&
+                           cell.DateOfFreezing.Value >= new DateTime(yearStart, monthStart, dayStart) &&
+                           cell.DateOfFreezing.Value <= new DateTime(yearEnd, monthEnd, dayEnd))
             .ToListAsync();
     }
 
@@ -123,24 +131,31 @@ public class BankEntityService : IBankEntityService
         return await _dbSecondContext.BankOfCells.CountAsync();
     }
 
-    public async Task UpdateBankCell(int id, UpdateCellModel model)
+    public async Task FreezeCell(int bankId, FreezeCellModel model)
     {
-        var bankCell = await _dbSecondContext.BankOfCells.FindAsync(id);
-        
-        if (bankCell == null)
+        var cellToFreeze = await _dbSecondContext.BankOfCells.FindAsync(bankId);
+        if (cellToFreeze!=null)
         {
-            throw new ArgumentException($"Клетка с ID {id} не найдена.");
+            _secondBankMapper.Map(model, cellToFreeze);
+            await _dbSecondContext.SaveChangesAsync();
         }
+        else
+        {
+            throw new ArgumentException($"Клетка с id {bankId} не найдена");
+        }
+    }
 
-        // Обновляем свойства клетки
-        bankCell.CellLine = model.CellLine;
-        bankCell.Clearing = model.Clearing;
-        bankCell.Certification = model.Certification;
-        bankCell.Address = model.Address;
-        bankCell.Quantity = model.Quantity;
-        bankCell.Origin = model.Origin;
-
-        // Сохраняем изменения
-        await _dbSecondContext.SaveChangesAsync();
+    public async Task DefrostCell(int bankId, DefrostCellModel model)
+    {
+        var cellToDefrost = await _dbSecondContext.BankOfCells.FindAsync(bankId);
+        if (cellToDefrost!=null)
+        {
+            _secondBankMapper.Map(model, cellToDefrost);
+            await _dbSecondContext.SaveChangesAsync();
+        }
+        else
+        {
+            throw new ArgumentException($"Клетка с id {bankId} не найдена");
+        }
     }
 }

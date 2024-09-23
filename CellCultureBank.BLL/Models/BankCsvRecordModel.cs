@@ -1,10 +1,10 @@
 ﻿using CsvHelper.Configuration.Attributes;
 
-namespace CellCultureBank.BLL.Models.BankSecond;
+namespace CellCultureBank.BLL.Models;
 /// <summary>
 /// Модель записи таблицы в CSV
 /// </summary>
-public class BankCsvRecord
+public class BankCsvRecordModel
 {
     
     [Name("Клеточная линия")]

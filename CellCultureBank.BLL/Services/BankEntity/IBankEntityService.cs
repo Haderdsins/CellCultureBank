@@ -1,4 +1,4 @@
-﻿using CellCultureBank.BLL.Models.BankSecond;
+﻿using CellCultureBank.BLL.Models;
 using CellCultureBank.DAL.Models;
 
 namespace CellCultureBank.BLL.Services.BankEntity;
@@ -10,7 +10,7 @@ public interface IBankEntityService
     /// </summary>
     /// <param name="model"></param>
     /// <returns></returns>
-    Task Create(CreateItemOfBank model);
+    Task Create(CreateItemModel model);
 
     /// <summary>
     /// Удалить клетку
@@ -38,7 +38,7 @@ public interface IBankEntityService
     /// <param name="bankId">Id клетки</param>
     /// <param name="model">Модель обновления клетки</param>
     /// <returns></returns>
-    Task Update(int bankId, UpdateItemOfBank model);
+    Task Update(int bankId, UpdateItemModel model);
     
     /// <summary>
     /// Получить все клетки в отсортированном порядке по убыванию
@@ -72,7 +72,19 @@ public interface IBankEntityService
     /// <param name="dayEnd">Конечный день</param>
     /// <returns></returns>
     Task<IEnumerable<BankOfCell>> GetAllOnDateRangeOfDefrosting(int yearStart, int monthStart, int dayStart, int yearEnd, int monthEnd, int dayEnd);
-
+    
+    /// <summary>
+    /// Получить все клетки в диапазоне дат заморозки
+    /// </summary>
+    /// <param name="yearStart">Начальный год</param>
+    /// <param name="monthStart">Начальный месяц</param>
+    /// <param name="dayStart">Начальный день</param>
+    /// <param name="yearEnd">Конечный год</param>
+    /// <param name="monthEnd">Конечный месяц</param>
+    /// <param name="dayEnd">Конечный день</param>
+    /// <returns></returns>
+    Task<IEnumerable<BankOfCell>> GetAllOnDateRangeOfFrosting(int yearStart, int monthStart, int dayStart, int yearEnd, int monthEnd, int dayEnd);
+    
     /// <summary>
     /// Получить количество клеток
     /// </summary>
@@ -80,10 +92,14 @@ public interface IBankEntityService
     Task<int> GetCountOfAllItems();
 
     /// <summary>
-    /// Обновить клетку без дат заморозки и разморозки
+    /// Заморозить клетку
     /// </summary>
-    /// <param name="id">Id клетки</param>
-    /// <param name="model">Модель клетки</param>
     /// <returns></returns>
-    Task UpdateBankCell(int id, UpdateCellModel model);
+    Task FreezeCell(int bankId, FreezeCellModel model);
+
+    /// <summary>
+    /// Разморозить клетку
+    /// </summary>
+    /// <returns></returns>
+    Task DefrostCell(int bankId, DefrostCellModel model);
 }

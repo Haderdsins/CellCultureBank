@@ -31,4 +31,23 @@ public class UserController : ControllerBase
             return BadRequest(e.Message);
         }
     }
+    /// <summary>
+    /// Вывести всех пользователей
+    /// </summary>
+    /// <param name="model"></param>
+    /// <returns></returns>
+    [HttpGet("GetAllUsers")]
+    public async Task<IActionResult> GetAllUsers()
+    {
+        try
+        {
+            var allUsers = await _userService.GetAllUsers();
+            return Ok(allUsers);
+        }
+        catch (Exception e)
+        {
+            return BadRequest(e.Message);
+            
+        }
+    }
 }

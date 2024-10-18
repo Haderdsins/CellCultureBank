@@ -16,5 +16,6 @@ public class BankProfile : AutoMapper.Profile
         CreateMap<DefrostCellModel, BankOfCell>();
         CreateMap<BankOfCell, GetModel>();
         CreateMap<CreateUserModel, User>();
+        
     }
 }
